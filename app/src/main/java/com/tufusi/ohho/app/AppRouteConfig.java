@@ -1,4 +1,4 @@
-package com.tufusi.ohho.utils;
+package com.tufusi.ohho.app;
 
 import android.content.res.AssetManager;
 
@@ -6,8 +6,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.tufusi.ohho.model.BottomBar;
 import com.tufusi.ohho.model.Destination;
-
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;

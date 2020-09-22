@@ -7,12 +7,10 @@ import android.graphics.Color;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MenuItem;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.exoplayer2.C;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -20,8 +18,9 @@ import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.tufusi.ohho.R;
 import com.tufusi.ohho.model.BottomBar;
 import com.tufusi.ohho.model.Destination;
-import com.tufusi.ohho.utils.AppGlobal;
-import com.tufusi.ohho.utils.AppRouteConfig;
+import com.tufusi.ohho.app.AppGlobal;
+import com.tufusi.ohho.app.AppRouteConfig;
+import com.tufusi.ohho.utils.ScreenUtils;
 
 import java.util.List;
 
@@ -92,7 +91,7 @@ public class AppBottomBar extends BottomNavigationView {
         // getMenu().add - MenuBuilder#add - addInternal - onItemsChanged(true) - BottomNavigationPresenter#updateMenuView - BottomNavigationMenuView#buildMenuView
         // 如果不等布局绘制好，直接设置会被remove掉，从而设置无效
         for (BottomBar.TabsBean tab : tabs) {
-            int iconSize = dip2px(tab.size);
+            int iconSize = ScreenUtils.dip2px(tab.size);
 
             // BottomNavigationView 直接子View : BottomNavigationMenuView
             BottomNavigationMenuView menuView = (BottomNavigationMenuView) getChildAt(0);
@@ -106,11 +105,6 @@ public class AppBottomBar extends BottomNavigationView {
                 itemView.setShifting(false);
             }
         }
-    }
-
-    private int dip2px(int size) {
-        float value = (AppGlobal.getsApplication().getResources().getDisplayMetrics().density * size) + 0.5f;
-        return (int) value;
     }
 
     private int getId(String pageUrl) {
