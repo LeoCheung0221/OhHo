@@ -21,9 +21,20 @@ android {
         }
     }
 
+    defaultConfig {
+        ndk {
+            // 设置支持的so库架构
+            abiFilters 'armeabi-v7a' //, 'x86_64', 'arm64-v8a' x86是给模拟器用的
+        }
+    }
+
     compileOptions {
         sourceCompatibility = "1.8"
         targetCompatibility = "1.8"
+    }
+
+    dataBinding {
+        enabled = true
     }
 }
 
@@ -40,6 +51,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     implementation project(":libnavannotation")
+    implementation project(":libcommon")
     annotationProcessor project(":libnavcompiler")
 
 }

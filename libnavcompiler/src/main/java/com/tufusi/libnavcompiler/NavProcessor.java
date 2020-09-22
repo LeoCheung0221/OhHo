@@ -115,13 +115,14 @@ public class NavProcessor extends AbstractProcessor {
         return true;
     }
 
-    private void handlerDestination(Set<? extends Element> elements, Class<? extends Annotation> annotationClz, HashMap<String, JSONObject> destMap) {
+    private void handlerDestination(Set<? extends Element> elements, Class<? extends Annotation> annotationClz,
+                                    HashMap<String, JSONObject> destMap) {
         // 由于标记在类上，因此可以直接转成 TypeElement
         for (Element element : elements) {
             TypeElement typeElement = (TypeElement) element;
 
             String className = typeElement.getQualifiedName().toString();
-            int id = Math.abs(annotationClz.hashCode());
+            int id = Math.abs(className.hashCode());
             String pageUrl = null;
             boolean needLogin = false;
             boolean asStarter = false;
