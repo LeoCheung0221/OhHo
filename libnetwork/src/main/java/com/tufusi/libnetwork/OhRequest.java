@@ -1,0 +1,205 @@
+package com.tufusi.libnetwork;
+
+import android.util.Log;
+
+import androidx.annotation.IntDef;
+
+import com.tufusi.libnetwork.parse.IConvert;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.Map;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
+/**
+ * Created by 鼠夏目 on 2020/9/22.
+ *
+ * @author 鼠夏目
+ * @description
+ */
+public abstract class OhRequest<T, R extends OhRequest> {
+
+    protected String mUrl;
+
+    protected HashMap<String, String> headers = new HashMap<>();
+    protected HashMap<String, Object> params = new HashMap<>();
+
+    /**
+     * 仅仅访问缓存 即使本地没有也不会访问网络
+     */
+    private static final int CACHE_ONLY = 1;
+    /**
+     * 优先访问缓存 再访问网络 成功后缓存到本地
+     */
+    private static final int CACHE_FIRST = 2;
+
+    /**
+     * 仅仅访问网络 不做任何存储
+     */
+    private static final int NET_ONLY = 3;
+
+    /**
+     * 优先访问网络，成功后缓存到本地
+     */
+    private static final int NET_CACHE = 4;
+
+    private String mCacheKey;
+    private Type mType;
+    private Class mClass;
+
+    @IntDef({CACHE_ONLY, CACHE_FIRST, NET_ONLY, NET_CACHE})
+    public @interface CacheStrategy {
+
+    }
+
+    public OhRequest(String url) {
+        this.mUrl = url;
+    }
+
+    public R addHeader(String key, String value) {
+        headers.put(key, value);
+        return (R) this;
+    }
+
+    public R addParam(String key, Object value) {
+        try {
+            Field field = value.getClass().getField("TYPE");
+            Class clazz = (Class) field.get(null);
+            if (clazz.isPrimitive()) {
+                params.put(key, value);
+            }
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return (R) this;
+    }
+
+    public R cacheKey(String key) {
+        this.mCacheKey = key;
+        return (R) this;
+    }
+
+    /**
+     * 有关泛型类型获取
+     * 从 Java 5 开始，规定泛型信息要写到 java 文件中，没有显示明确声明泛型类型的，会被编译器编译时擦除掉。
+     * 解决方案：
+     * new interface 出传递的泛型类型运行时是可以获取的，
+     * 因为编译时会生成 interface 的匿名内部类，内部类是明确显示声明的泛型的类型。也就不会被擦除
+     */
+    public OhResponse<T> execute() {
+        try {
+            Response response = getCall().execute();
+            OhResponse<T> result = parseResponse(response, null);
+            return result;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void execute(final ResultCallback<T> callback) {
+        getCall().enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                OhResponse<T> response = new OhResponse<>();
+                response.message = e.getMessage();
+                if (callback != null) {
+                    callback.onError(response);
+                }
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                OhResponse<T> ohResponse = parseResponse(response, callback);
+                if (ohResponse.success) {
+                    if (callback != null) {
+                        callback.onSuccess(ohResponse);
+                    }
+                } else {
+                    if (callback != null) {
+                        callback.onError(ohResponse);
+                    }
+                }
+            }
+        });
+    }
+
+    public R responseRawType(Type type) {
+        mType = type;
+        return (R) this;
+    }
+
+    public R responseRawType(Class claz) {
+        mClass = claz;
+        return (R) this;
+    }
+
+    /**
+     * 解析响应实体对象
+     *
+     * @param response 响应结果
+     * @param callback 结果回调
+     * @return
+     */
+    private OhResponse<T> parseResponse(Response response, ResultCallback<T> callback) {
+        String message = null;
+        boolean success = response.isSuccessful();
+        int status = response.code();
+        OhResponse<T> result = new OhResponse<>();
+        IConvert convert = ApiService.sConvert;
+        try {
+            String content = String.valueOf(response.body());
+            if (success) {
+                if (callback != null) {
+                    // 找出泛型原始类型
+                    ParameterizedType type = (ParameterizedType) callback.getClass().getGenericSuperclass();
+                    Type argument = type.getActualTypeArguments()[0];
+                    result.data = (T) convert.convert(content, argument);
+                } else if (mType != null) {
+                    result.data = (T) convert.convert(content, mType);
+                } else if (mClass != null) {
+                    result.data = (T) convert.convert(content, mClass);
+                } else {
+                    Log.e("OhRequest", "parseResponse: 无法解析");
+                }
+            } else {
+                message = content;
+            }
+        } catch (Exception e) {
+            message = e.getMessage();
+            success = false;
+        }
+        result.success = success;
+        result.status = status;
+        result.message = message;
+        return result;
+    }
+
+    private Call getCall() {
+        Request.Builder reqBuilder = new Request.Builder();
+        addHeaders(reqBuilder);
+        Request request = generateRequest(reqBuilder);
+
+        Call call = ApiService.mOkHttpClient.newCall(request);
+        return call;
+    }
+
+    protected abstract Request generateRequest(Request.Builder builder);
+
+    private void addHeaders(Request.Builder builder) {
+        for (Map.Entry<String, String> entry : headers.entrySet()) {
+            builder.addHeader(entry.getKey(), entry.getValue());
+        }
+    }
+
+}

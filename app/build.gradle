@@ -51,7 +51,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     implementation project(":libnavannotation")
-    implementation project(":libcommon")
     annotationProcessor project(":libnavcompiler")
+    implementation project(":libcommon")
+    implementation project(":libnetwork")
 
 }
