@@ -4,6 +4,7 @@ import android.content.res.AssetManager;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.tufusi.libcommon.AppGlobal;
 import com.tufusi.ohho.model.BottomBar;
 import com.tufusi.ohho.model.Destination;
 

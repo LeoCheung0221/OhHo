@@ -1,6 +1,6 @@
 package com.tufusi.ohho.utils;
 
-import com.tufusi.ohho.app.AppGlobal;
+import com.tufusi.libcommon.AppGlobal;
 
 /**
  * Created by 鼠夏目 on 2020/9/22.

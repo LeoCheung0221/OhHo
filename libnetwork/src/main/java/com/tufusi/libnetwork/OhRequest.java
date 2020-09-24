@@ -1,14 +1,21 @@
 package com.tufusi.libnetwork;
 
+import android.annotation.SuppressLint;
+import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.IntDef;
+import androidx.arch.core.executor.ArchTaskExecutor;
 
+import com.tufusi.cache.CacheDatabase;
+import com.tufusi.cache.CacheManager;
+import com.tufusi.libnetwork.manager.UrlCreator;
 import com.tufusi.libnetwork.parse.IConvert;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -20,14 +27,15 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 /**
  * Created by 鼠夏目 on 2020/9/22.
  *
  * @author 鼠夏目
- * @description
+ * @description 实现 Cloneable 可以在同步请求中 做到先读取缓存再请求网络
  */
-public abstract class OhRequest<T, R extends OhRequest> {
+public abstract class OhRequest<T, R extends OhRequest> implements Cloneable{
 
     protected String mUrl;
 
@@ -56,10 +64,16 @@ public abstract class OhRequest<T, R extends OhRequest> {
     private String mCacheKey;
     private Type mType;
     private Class mClass;
+    private int mCacheStrategy;
 
     @IntDef({CACHE_ONLY, CACHE_FIRST, NET_ONLY, NET_CACHE})
     public @interface CacheStrategy {
 
+    }
+
+    public R cacheStrategy(@CacheStrategy int cacheStrategy) {
+        mCacheStrategy = cacheStrategy;
+        return (R) this;
     }
 
     public OhRequest(String url) {
@@ -97,6 +111,9 @@ public abstract class OhRequest<T, R extends OhRequest> {
      * 因为编译时会生成 interface 的匿名内部类，内部类是明确显示声明的泛型的类型。也就不会被擦除
      */
     public OhResponse<T> execute() {
+        if (mCacheStrategy == CACHE_ONLY){
+            return readCache();
+        }
         try {
             Response response = getCall().execute();
             OhResponse<T> result = parseResponse(response, null);
@@ -107,31 +124,60 @@ public abstract class OhRequest<T, R extends OhRequest> {
         return null;
     }
 
+    @SuppressLint("RestrictedApi")
     public void execute(final ResultCallback<T> callback) {
-        getCall().enqueue(new Callback() {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                OhResponse<T> response = new OhResponse<>();
-                response.message = e.getMessage();
-                if (callback != null) {
-                    callback.onError(response);
+        if (mCacheStrategy != NET_ONLY) {
+            //  子线程异步执行
+            ArchTaskExecutor.getIOThreadExecutor().execute(new Runnable() {
+                @Override
+                public void run() {
+                    OhResponse<T> response = readCache();
+                    if (callback != null) {
+                        callback.onCacheSuccess(response);
+                    }
                 }
-            }
+            });
+        }
 
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                OhResponse<T> ohResponse = parseResponse(response, callback);
-                if (ohResponse.success) {
+        if (mCacheStrategy != CACHE_ONLY) {
+            getCall().enqueue(new Callback() {
+                @Override
+                public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                    OhResponse<T> response = new OhResponse<>();
+                    response.message = e.getMessage();
                     if (callback != null) {
-                        callback.onSuccess(ohResponse);
-                    }
-                } else {
-                    if (callback != null) {
-                        callback.onError(ohResponse);
+                        callback.onError(response);
                     }
                 }
-            }
-        });
+
+                @Override
+                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                    OhResponse<T> ohResponse = parseResponse(response, callback);
+                    if (ohResponse.success) {
+                        if (callback != null) {
+                            callback.onSuccess(ohResponse);
+                        }
+                    } else {
+                        if (callback != null) {
+                            callback.onError(ohResponse);
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    private OhResponse<T> readCache() {
+        String key = TextUtils.isEmpty(mCacheKey) ? generateCacheKey() : mCacheKey;
+        Object cache = CacheManager.getCache(key);
+
+        OhResponse<T> response = new OhResponse<>();
+        response.success = true;
+        //缓存码
+        response.status = 304;
+        response.message = "缓存获取成功";
+        response.data = (T) cache;
+        return response;
     }
 
     public R responseRawType(Type type) {
@@ -182,7 +228,22 @@ public abstract class OhRequest<T, R extends OhRequest> {
         result.success = success;
         result.status = status;
         result.message = message;
+
+        if (mCacheStrategy != NET_ONLY && result.success && result.data instanceof Serializable) {
+            saveCache(result.data);
+        }
+
         return result;
+    }
+
+    private void saveCache(T body) {
+        String key = TextUtils.isEmpty(mCacheKey) ? generateCacheKey() : mCacheKey;
+        CacheManager.save(key, body);
+    }
+
+    private String generateCacheKey() {
+        mCacheKey = UrlCreator.createUrlFromParams(mUrl, params);
+        return mCacheKey;
     }
 
     private Call getCall() {
@@ -190,8 +251,7 @@ public abstract class OhRequest<T, R extends OhRequest> {
         addHeaders(reqBuilder);
         Request request = generateRequest(reqBuilder);
 
-        Call call = ApiService.mOkHttpClient.newCall(request);
-        return call;
+        return ApiService.mOkHttpClient.newCall(request);
     }
 
     protected abstract Request generateRequest(Request.Builder builder);

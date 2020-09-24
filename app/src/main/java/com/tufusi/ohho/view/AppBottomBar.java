@@ -18,7 +18,6 @@ import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.tufusi.ohho.R;
 import com.tufusi.ohho.model.BottomBar;
 import com.tufusi.ohho.model.Destination;
-import com.tufusi.ohho.app.AppGlobal;
 import com.tufusi.ohho.app.AppRouteConfig;
 import com.tufusi.ohho.utils.ScreenUtils;
 

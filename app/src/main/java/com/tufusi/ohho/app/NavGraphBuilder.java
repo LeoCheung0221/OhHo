@@ -11,8 +11,7 @@ import androidx.navigation.NavGraphNavigator;
 import androidx.navigation.NavigatorProvider;
 import androidx.navigation.fragment.FragmentNavigator;
 
-import com.tufusi.ohho.app.AppGlobal;
-import com.tufusi.ohho.app.AppRouteConfig;
+import com.tufusi.libcommon.AppGlobal;
 import com.tufusi.ohho.app.navigator.FixFragmentNavigator;
 import com.tufusi.ohho.model.Destination;
 

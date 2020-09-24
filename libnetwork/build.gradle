@@ -41,4 +41,7 @@ dependencies {
     annotationProcessor "android.arch.lifecycle:compiler:1.1.1"
 
     implementation 'com.alibaba:fastjson:1.2.59'
+
+    // 只参与编译 不参与打包
+    compileOnly project(":libcommon")
 }

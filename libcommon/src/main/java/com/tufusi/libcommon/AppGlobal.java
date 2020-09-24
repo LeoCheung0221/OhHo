@@ -1,4 +1,4 @@
-package com.tufusi.ohho.app;
+package com.tufusi.libcommon;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
