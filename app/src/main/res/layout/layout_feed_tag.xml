@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="tagText"
+            type="String" />
+
+        <import type="android.text.TextUtils" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_16"
+        android:layout_marginTop="@dimen/dp_8"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:backgroundTint="@color/color_gray"
+        android:orientation="vertical"
+        android:text="@{tagText}"
+        android:textColor="@color/color_2f2"
+        android:textSize="@dimen/sp_12"
+        android:visibility="@{TextUtils.isEmpty(tagText)?View.GONE:View.VISIBLE}"
+        app:cornerRadius="@dimen/dp_25"
+        app:icon="@drawable/icon_tag"
+        app:iconGravity="textStart"
+        app:iconPadding="@dimen/dp_4"
+        app:iconSize="@dimen/dp_12"
+        app:iconTint="@color/color_theme"
+        tools:text="我压你肘了么">
+
+    </com.google.android.material.button.MaterialButton>
+</layout>

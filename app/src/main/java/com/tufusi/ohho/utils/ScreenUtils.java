@@ -1,5 +1,7 @@
 package com.tufusi.ohho.utils;
 
+import android.util.DisplayMetrics;
+
 import com.tufusi.libcommon.AppGlobal;
 
 /**
@@ -13,6 +15,16 @@ public class ScreenUtils {
     public static int dip2px(int size) {
         float value = (AppGlobal.getsApplication().getResources().getDisplayMetrics().density * size) + 0.5f;
         return (int) value;
+    }
+
+    public static int getScreenWidth() {
+        DisplayMetrics metrics = AppGlobal.getsApplication().getResources().getDisplayMetrics();
+        return metrics.widthPixels;
+    }
+
+    public static int getScreenHeight() {
+        DisplayMetrics metrics = AppGlobal.getsApplication().getResources().getDisplayMetrics();
+        return metrics.heightPixels;
     }
 
 }
