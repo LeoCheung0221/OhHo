@@ -1,6 +1,7 @@
 package com.tufusi.ohho.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Created by 鼠夏目 on 2020/9/25.
@@ -83,4 +84,27 @@ public class Ugc implements Serializable {
     public void setHasDissed(boolean hasDissed) {
         this.hasDissed = hasDissed;
     }
-} 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Ugc ugc = (Ugc) o;
+        return likeCount == ugc.likeCount &&
+                shareCount == ugc.shareCount &&
+                commentCount == ugc.commentCount &&
+                hasFavorite == ugc.hasFavorite &&
+                hasLiked == ugc.hasLiked &&
+                hasdiss == ugc.hasdiss &&
+                hasDissed == ugc.hasDissed;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(likeCount, shareCount, commentCount, hasFavorite, hasLiked, hasdiss, hasDissed);
+    }
+}

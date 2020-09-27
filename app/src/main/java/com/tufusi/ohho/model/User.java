@@ -30,8 +30,8 @@ public class User implements Serializable {
      * hasFollow : false
      */
 
-    private String id;
-    private String userId;
+    private long id;
+    private long userId;
     private String name;
     private String avatar;
     private String description;
@@ -48,19 +48,19 @@ public class User implements Serializable {
     private int feedCount;
     private boolean hasFollow;
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public String getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 

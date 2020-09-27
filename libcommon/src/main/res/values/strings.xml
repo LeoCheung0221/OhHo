@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="string_empty_hint_default">虽然什么也没有,要不下拉刷新试试</string>
+</resources>

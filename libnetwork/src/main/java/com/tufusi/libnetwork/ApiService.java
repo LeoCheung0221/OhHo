@@ -2,6 +2,8 @@ package com.tufusi.libnetwork;
 
 import com.tufusi.libnetwork.parse.IConvert;
 import com.tufusi.libnetwork.parse.JsonConvert;
+import com.tufusi.libnetwork.restful.GetRequest;
+import com.tufusi.libnetwork.restful.PostRequest;
 
 import java.net.HttpURLConnection;
 import java.security.KeyManagementException;
@@ -86,5 +88,13 @@ public class ApiService {
             convert = new JsonConvert();
         }
         sConvert = convert;
+    }
+
+    public static <T> GetRequest<T> get(String url) {
+        return new GetRequest<>(sBaseUrl + url);
+    }
+
+    public static <T> PostRequest<T> post(String url) {
+        return new PostRequest<>(sBaseUrl + url);
     }
 } 

@@ -1,6 +1,7 @@
 package com.tufusi.ohho.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Created by 鼠夏目 on 2020/9/24.
@@ -29,7 +30,7 @@ public class Comment implements Serializable {
      * ugc : {"likeCount":103,"shareCount":10,"commentCount":10,"hasFavorite":false,"hasLiked":false,"hasdiss":false,"hasDissed":false}
      */
 
-    private String id;
+    private long id;
     private long itemId;
     private long commentId;
     private int userId;
@@ -46,11 +47,11 @@ public class Comment implements Serializable {
     private User author;
     private Ugc ugc;
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -172,5 +173,37 @@ public class Comment implements Serializable {
 
     public void setUgc(Ugc ugc) {
         this.ugc = ugc;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Comment comment = (Comment) o;
+        return id == comment.id &&
+                itemId == comment.itemId &&
+                commentId == comment.commentId &&
+                userId == comment.userId &&
+                commentType == comment.commentType &&
+                createTime == comment.createTime &&
+                commentCount == comment.commentCount &&
+                likeCount == comment.likeCount &&
+                width == comment.width &&
+                height == comment.height &&
+                hasLiked == comment.hasLiked &&
+                Objects.equals(commentText, comment.commentText) &&
+                Objects.equals(imageUrl, comment.imageUrl) &&
+                Objects.equals(videoUrl, comment.videoUrl) &&
+                Objects.equals(author, comment.author) &&
+                Objects.equals(ugc, comment.ugc);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, itemId, commentId, userId, commentType, createTime, commentCount, likeCount, commentText, imageUrl, videoUrl, width, height, hasLiked, author, ugc);
     }
 }

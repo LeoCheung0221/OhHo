@@ -1,6 +1,7 @@
 package com.tufusi.ohho.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Created by 鼠夏目 on 2020/9/24.
@@ -9,6 +10,9 @@ import java.io.Serializable;
  * @description
  */
 public class Feed implements Serializable {
+
+    public static final int IMAGE_TYPE = 1;
+    public static final int VIDEO_TYPE = 2;
 
     /**
      * id : 428
@@ -26,7 +30,7 @@ public class Feed implements Serializable {
      * cover : https://pipijoke.oss-cn-hangzhou.aliyuncs.com/2020%E5%B0%81%E9%9D%A2%E5%9B%BE.png
      */
 
-    private String id;
+    private long id;
     private long itemId;
     private int itemType;
     private long createTime;
@@ -67,11 +71,11 @@ public class Feed implements Serializable {
         this.topComment = topComment;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -169,5 +173,37 @@ public class Feed implements Serializable {
 
     public void setCover(String cover) {
         this.cover = cover;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Feed feed = (Feed) o;
+        return id == feed.id &&
+                itemId == feed.itemId &&
+                itemType == feed.itemType &&
+                createTime == feed.createTime &&
+                duration == feed.duration &&
+                width == feed.width &&
+                height == feed.height &&
+                Objects.equals(feeds_text, feed.feeds_text) &&
+                Objects.equals(authorId, feed.authorId) &&
+                Objects.equals(activityIcon, feed.activityIcon) &&
+                Objects.equals(activityText, feed.activityText) &&
+                Objects.equals(url, feed.url) &&
+                Objects.equals(cover, feed.cover) &&
+                Objects.equals(author, feed.author) &&
+                Objects.equals(ugc, feed.ugc) &&
+                Objects.equals(topComment, feed.topComment);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, itemId, itemType, createTime, duration, feeds_text, authorId, activityIcon, activityText, width, height, url, cover, author, ugc, topComment);
     }
 }

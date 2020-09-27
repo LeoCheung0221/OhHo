@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.IntDef;
+import androidx.annotation.NonNull;
 import androidx.arch.core.executor.ArchTaskExecutor;
 
 import com.tufusi.cache.CacheDatabase;
@@ -35,7 +36,7 @@ import okhttp3.ResponseBody;
  * @author 鼠夏目
  * @description 实现 Cloneable 可以在同步请求中 做到先读取缓存再请求网络
  */
-public abstract class OhRequest<T, R extends OhRequest> implements Cloneable{
+public abstract class OhRequest<T, R extends OhRequest> implements Cloneable {
 
     protected String mUrl;
 
@@ -45,21 +46,21 @@ public abstract class OhRequest<T, R extends OhRequest> implements Cloneable{
     /**
      * 仅仅访问缓存 即使本地没有也不会访问网络
      */
-    private static final int CACHE_ONLY = 1;
+    public static final int CACHE_ONLY = 1;
     /**
      * 优先访问缓存 再访问网络 成功后缓存到本地
      */
-    private static final int CACHE_FIRST = 2;
+    public static final int CACHE_FIRST = 2;
 
     /**
      * 仅仅访问网络 不做任何存储
      */
-    private static final int NET_ONLY = 3;
+    public static final int NET_ONLY = 3;
 
     /**
      * 优先访问网络，成功后缓存到本地
      */
-    private static final int NET_CACHE = 4;
+    public static final int NET_CACHE = 4;
 
     private String mCacheKey;
     private Type mType;
@@ -86,11 +87,19 @@ public abstract class OhRequest<T, R extends OhRequest> implements Cloneable{
     }
 
     public R addParam(String key, Object value) {
+        if (value == null) {
+            return (R) this;
+        }
+
         try {
-            Field field = value.getClass().getField("TYPE");
-            Class clazz = (Class) field.get(null);
-            if (clazz.isPrimitive()) {
+            if (value.getClass() == String.class) {
                 params.put(key, value);
+            } else {
+                Field field = value.getClass().getField("TYPE");
+                Class clazz = (Class) field.get(null);
+                if (clazz.isPrimitive()) {
+                    params.put(key, value);
+                }
             }
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
@@ -111,7 +120,7 @@ public abstract class OhRequest<T, R extends OhRequest> implements Cloneable{
      * 因为编译时会生成 interface 的匿名内部类，内部类是明确显示声明的泛型的类型。也就不会被擦除
      */
     public OhResponse<T> execute() {
-        if (mCacheStrategy == CACHE_ONLY){
+        if (mCacheStrategy == CACHE_ONLY) {
             return readCache();
         }
         try {
@@ -262,4 +271,9 @@ public abstract class OhRequest<T, R extends OhRequest> implements Cloneable{
         }
     }
 
+    @NonNull
+    @Override
+    public OhRequest clone() throws CloneNotSupportedException {
+        return (OhRequest<T, R>) super.clone();
+    }
 }

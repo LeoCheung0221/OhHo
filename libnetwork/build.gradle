@@ -10,7 +10,6 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
 
@@ -24,10 +23,6 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     // 网络请求库
     implementation 'com.squareup.okhttp3:okhttp:4.2.0'
@@ -40,8 +35,7 @@ dependencies {
     //noinspection LifecycleAnnotationProcessorWithJav  a8
     annotationProcessor "android.arch.lifecycle:compiler:1.1.1"
 
-    implementation 'com.alibaba:fastjson:1.2.59'
-
     // 只参与编译 不参与打包
-    compileOnly project(":libcommon")
+//    compileOnly project(":libcommon")
+    implementation project(":libcommon")
 }
