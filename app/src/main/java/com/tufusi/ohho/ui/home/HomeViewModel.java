@@ -1,9 +1,12 @@
 package com.tufusi.ohho.ui.home;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.paging.DataSource;
 import androidx.paging.ItemKeyedDataSource;
 
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.tufusi.libnetwork.ApiService;
 import com.tufusi.libnetwork.OhRequest;
@@ -25,6 +28,7 @@ public class HomeViewModel extends AbsViewModel<Feed> {
         return mDataSource;
     }
 
+
     /**
      * 首页加载 先加载缓存，再加载网络，随后更新本地缓存
      */
@@ -33,6 +37,7 @@ public class HomeViewModel extends AbsViewModel<Feed> {
         // 加载初始化数据时调用
         @Override
         public void loadInitial(@NonNull LoadInitialParams<Long> params, @NonNull LoadInitialCallback<Feed> callback) {
+            Log.e("homeviewmodel", "loadInitial: ");
             loadData(0L, callback);
             withCache = false;
         }
@@ -40,6 +45,7 @@ public class HomeViewModel extends AbsViewModel<Feed> {
         // 加载分页数据时调用
         @Override
         public void loadAfter(@NonNull LoadParams<Long> params, @NonNull LoadCallback<Feed> callback) {
+            Log.e("homeviewmodel", "loadAfter: ");
             loadData(params.key, callback);
         }
 
@@ -57,8 +63,8 @@ public class HomeViewModel extends AbsViewModel<Feed> {
     };
 
     private void loadData(Long key, ItemKeyedDataSource.LoadCallback<Feed> callback) {
-        if (key > 0) {
-        }
+//        if (key > 0) {
+//        }
         OhRequest request = ApiService.get("/feeds/queryHotFeedsList")
                 .addParam("feedType", null)
                 .addParam("userId", 0)
@@ -67,12 +73,15 @@ public class HomeViewModel extends AbsViewModel<Feed> {
                 .responseRawType(new TypeReference<ArrayList<Feed>>() {
                 }.getType());
 
+        Log.i("loadData: ", JSONObject.toJSONString(request.getParams()));
+
+        // 需要加载缓存
         if (withCache) {
             request.cacheStrategy(OhRequest.CACHE_ONLY);
             request.execute(new ResultCallback<List<Feed>>() {
                 @Override
-                public void onCacheSuccess(OhResponse response) {
-
+                public void onCacheSuccess(OhResponse<List<Feed>> response) {
+                    Log.e("onCacheSuccess", "onCacheSuccess: " + response.body);
                 }
             });
         }
@@ -82,7 +91,7 @@ public class HomeViewModel extends AbsViewModel<Feed> {
             // 如果是下拉刷新 则缓存策略选择 OhRequest.NET_CACHE， 如果是上拉加载 取 OhRequest.NET_ONLY
             netRequest.cacheStrategy(key == 0L ? OhRequest.NET_CACHE : OhRequest.NET_ONLY);
             OhResponse<List<Feed>> response = netRequest.execute();
-            List<Feed> data = response.data == null ? Collections.emptyList() : response.data;
+            List<Feed> data = response.body == null ? Collections.emptyList() : response.body;
 
             callback.onResult(data);
 

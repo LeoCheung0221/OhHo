@@ -40,12 +40,12 @@ import java.lang.reflect.Type;
 public abstract class AbsListFragment<T, M extends AbsViewModel> extends Fragment
         implements OnRefreshListener, OnLoadMoreListener {
 
-    private LayoutRefreshViewBinding binding;
-    private SmartRefreshLayout mRefreshLayout;
-    private RecyclerView mRecyclerView;
-    private EmptyView mEmptyView;
-    private PagedListAdapter<T, RecyclerView.ViewHolder> mAdapter;
-    private M mViewModel;
+    protected LayoutRefreshViewBinding binding;
+    protected SmartRefreshLayout mRefreshLayout;
+    protected RecyclerView mRecyclerView;
+    protected EmptyView mEmptyView;
+    protected PagedListAdapter<T, RecyclerView.ViewHolder> mAdapter;
+    protected M mViewModel;
 
     @Nullable
     @Override
@@ -83,7 +83,7 @@ public abstract class AbsListFragment<T, M extends AbsViewModel> extends Fragmen
         ParameterizedType type = (ParameterizedType) getClass().getGenericSuperclass();
         assert type != null;
         Type[] arguments = type.getActualTypeArguments();
-        if (arguments.length > 0) {
+        if (arguments.length > 1) {
             Type argument = arguments[1];
             Class modelClz = ((Class) argument).asSubclass(AbsViewModel.class);
             mViewModel = (M) ViewModelProviders.of(this).get(modelClz);

@@ -16,6 +16,6 @@ public class OhHoApp extends Application {
     public void onCreate() {
         super.onCreate();
 
-        ApiService.initService("http://172.16.202.25:8080/serverdemo", null);
+        ApiService.initService("http://344v6u4054.zicp.vip:34141/serverdemo", null);
     }
 }

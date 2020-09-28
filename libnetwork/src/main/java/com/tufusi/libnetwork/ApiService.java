@@ -1,5 +1,7 @@
 package com.tufusi.libnetwork;
 
+import android.util.Log;
+
 import com.tufusi.libnetwork.parse.IConvert;
 import com.tufusi.libnetwork.parse.JsonConvert;
 import com.tufusi.libnetwork.restful.GetRequest;
@@ -34,7 +36,6 @@ public class ApiService {
     protected static final OkHttpClient mOkHttpClient;
     protected static IConvert sConvert;
     protected static String sBaseUrl;
-    private static String baseUrl;
 
     static {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();

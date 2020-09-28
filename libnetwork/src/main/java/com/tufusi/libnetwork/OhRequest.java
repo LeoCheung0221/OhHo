@@ -8,7 +8,7 @@ import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.arch.core.executor.ArchTaskExecutor;
 
-import com.tufusi.cache.CacheDatabase;
+import com.alibaba.fastjson.JSON;
 import com.tufusi.cache.CacheManager;
 import com.tufusi.libnetwork.manager.UrlCreator;
 import com.tufusi.libnetwork.parse.IConvert;
@@ -25,7 +25,6 @@ import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
@@ -69,7 +68,6 @@ public abstract class OhRequest<T, R extends OhRequest> implements Cloneable {
 
     @IntDef({CACHE_ONLY, CACHE_FIRST, NET_ONLY, NET_CACHE})
     public @interface CacheStrategy {
-
     }
 
     public R cacheStrategy(@CacheStrategy int cacheStrategy) {
@@ -95,6 +93,7 @@ public abstract class OhRequest<T, R extends OhRequest> implements Cloneable {
             if (value.getClass() == String.class) {
                 params.put(key, value);
             } else {
+                // 八大基本类型利用反射 判断
                 Field field = value.getClass().getField("TYPE");
                 Class clazz = (Class) field.get(null);
                 if (clazz.isPrimitive()) {
@@ -104,6 +103,7 @@ public abstract class OhRequest<T, R extends OhRequest> implements Cloneable {
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
+//        Log.i( "ohho_log_request: ", JSON.toJSONString(params));
         return (R) this;
     }
 
@@ -120,17 +120,24 @@ public abstract class OhRequest<T, R extends OhRequest> implements Cloneable {
      * 因为编译时会生成 interface 的匿名内部类，内部类是明确显示声明的泛型的类型。也就不会被擦除
      */
     public OhResponse<T> execute() {
+        if (mType == null) {
+            throw new RuntimeException("响应对象类型必须设置");
+        }
         if (mCacheStrategy == CACHE_ONLY) {
             return readCache();
         }
+
+        OhResponse<T> result;
         try {
             Response response = getCall().execute();
-            OhResponse<T> result = parseResponse(response, null);
-            return result;
+            result = parseResponse(response, null);
         } catch (IOException e) {
             e.printStackTrace();
+            result = new OhResponse<>();
+            result.message = e.getMessage();
         }
-        return null;
+        Log.e("execute result: ", JSON.toJSONString(result));
+        return result;
     }
 
     @SuppressLint("RestrictedApi")
@@ -185,7 +192,7 @@ public abstract class OhRequest<T, R extends OhRequest> implements Cloneable {
         //缓存码
         response.status = 304;
         response.message = "缓存获取成功";
-        response.data = (T) cache;
+        response.body = (T) cache;
         return response;
     }
 
@@ -213,17 +220,18 @@ public abstract class OhRequest<T, R extends OhRequest> implements Cloneable {
         OhResponse<T> result = new OhResponse<>();
         IConvert convert = ApiService.sConvert;
         try {
-            String content = String.valueOf(response.body());
+            ResponseBody body = response.body();
+            String content = body.string();
             if (success) {
                 if (callback != null) {
                     // 找出泛型原始类型
                     ParameterizedType type = (ParameterizedType) callback.getClass().getGenericSuperclass();
                     Type argument = type.getActualTypeArguments()[0];
-                    result.data = (T) convert.convert(content, argument);
+                    result.body = (T) convert.convert(content, argument);
                 } else if (mType != null) {
-                    result.data = (T) convert.convert(content, mType);
+                    result.body = (T) convert.convert(content, mType);
                 } else if (mClass != null) {
-                    result.data = (T) convert.convert(content, mClass);
+                    result.body = (T) convert.convert(content, mClass);
                 } else {
                     Log.e("OhRequest", "parseResponse: 无法解析");
                 }
@@ -233,13 +241,14 @@ public abstract class OhRequest<T, R extends OhRequest> implements Cloneable {
         } catch (Exception e) {
             message = e.getMessage();
             success = false;
+            status = 0;
         }
         result.success = success;
         result.status = status;
         result.message = message;
 
-        if (mCacheStrategy != NET_ONLY && result.success && result.data instanceof Serializable) {
-            saveCache(result.data);
+        if (mCacheStrategy != NET_ONLY && result.success && result.body instanceof Serializable) {
+            saveCache(result.body);
         }
 
         return result;
@@ -269,6 +278,10 @@ public abstract class OhRequest<T, R extends OhRequest> implements Cloneable {
         for (Map.Entry<String, String> entry : headers.entrySet()) {
             builder.addHeader(entry.getKey(), entry.getValue());
         }
+    }
+
+    public HashMap<String, Object> getParams() {
+        return params;
     }
 
     @NonNull

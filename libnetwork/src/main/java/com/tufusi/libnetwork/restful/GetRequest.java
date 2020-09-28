@@ -1,5 +1,7 @@
 package com.tufusi.libnetwork.restful;
 
+import android.util.Log;
+
 import com.tufusi.libnetwork.OhRequest;
 import com.tufusi.libnetwork.manager.UrlCreator;
 
@@ -19,7 +21,8 @@ public class GetRequest<T> extends OhRequest<T, GetRequest> {
 
     @Override
     protected Request generateRequest(Request.Builder builder) {
-        Request request = builder.get().url(UrlCreator.createUrlFromParams(mUrl, params)).build();
+        String url = UrlCreator.createUrlFromParams(mUrl, params);
+        Request request = builder.get().url(url).build();
         return request;
     }
 }

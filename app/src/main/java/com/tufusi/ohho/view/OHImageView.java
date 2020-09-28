@@ -5,6 +5,8 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -46,7 +48,7 @@ public class OHImageView extends AppCompatImageView {
      */
     @SuppressLint("CheckResult")
     @BindingAdapter(value = {"image_url", "isCircle"}, requireAll = false)
-    public void setImageUrl(OHImageView view, String imageUrl, boolean isCircle) {
+    public static void setImageUrl(OHImageView view, String imageUrl, boolean isCircle) {
         RequestBuilder<Drawable> builder = Glide.with(view).load(imageUrl);
         if (isCircle) {
             builder.transform(new CenterCrop());
@@ -100,10 +102,18 @@ public class OHImageView extends AppCompatImageView {
             finalWidth = (int) (width * (finalHeight / height * 1.0f));
         }
 
-        ViewGroup.MarginLayoutParams layoutParams = new ViewGroup.MarginLayoutParams(finalWidth, finalHeight);
+        ViewGroup.LayoutParams params = getLayoutParams();
+        params.width = finalWidth;
+        params.height = finalHeight;
+
         // 如果高度大于宽度的图片，则适当设置 marginLeft
-        layoutParams.leftMargin = height > width ? ScreenUtils.dip2px(marginLeft) : 0;
-        setLayoutParams(layoutParams);
+        if (params instanceof FrameLayout.LayoutParams){
+            ((FrameLayout.LayoutParams)params).leftMargin = height > width ? ScreenUtils.dip2px(marginLeft) : 0;
+        }else if (params instanceof LinearLayout.LayoutParams){
+            ((LinearLayout.LayoutParams)params).leftMargin = height > width ? ScreenUtils.dip2px(marginLeft) : 0;
+        }
+
+        setLayoutParams(params);
     }
 
     /**

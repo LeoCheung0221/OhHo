@@ -14,6 +14,6 @@ public class OhResponse<T> {
 
     public String message;
 
-    public T data;
+    public T body;
 
 } 
