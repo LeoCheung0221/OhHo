@@ -6,24 +6,37 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.camera.core.AppConfig;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.tufusi.ohho.app.AppRouteConfig;
 import com.tufusi.ohho.app.NavGraphBuilder;
+import com.tufusi.ohho.model.Destination;
+import com.tufusi.ohho.model.User;
+import com.tufusi.ohho.ui.login.UserManager;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import okhttp3.Route;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     private NavController navController;
+    private BottomNavigationView navView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        BottomNavigationView navView = findViewById(R.id.nav_view);
+        navView = findViewById(R.id.nav_view);
 
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         assert fragment != null;
@@ -35,8 +48,25 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        navController.navigate(item.getItemId());
-        return !TextUtils.isEmpty(item.getTitle());
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        HashMap<String, Destination> config = AppRouteConfig.getRouteConfig();
+        Iterator<Map.Entry<String, Destination>> iterator = config.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, Destination> entry = iterator.next();
+            Destination value = entry.getValue();
+            if (value != null && !UserManager.get().isLogin() && value.needLogin && value.id == menuItem.getItemId()) {
+                UserManager.get().login(this).observe(this, new Observer<User>() {
+                    @Override
+                    public void onChanged(User user) {
+                        navView.setSelectedItemId(menuItem.getItemId());
+                    }
+                });
+
+                return false;
+            }
+        }
+
+        navController.navigate(menuItem.getItemId());
+        return !TextUtils.isEmpty(menuItem.getTitle());
     }
 }

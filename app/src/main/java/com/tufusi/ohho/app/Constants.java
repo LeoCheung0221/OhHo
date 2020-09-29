@@ -13,4 +13,14 @@ public class Constants {
      */
     public static final boolean DEV_TAG = false;
 
+    /**
+     * QQ 登录 key
+     */
+    public static final String APP_KEY = "";
+
+    /**
+     * QQ 登录 secret
+     */
+    public static final String APP_SECRET = "";
+
 } 
