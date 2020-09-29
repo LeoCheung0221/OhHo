@@ -123,14 +123,8 @@ public abstract class AbsListFragment<T, M extends AbsViewModel> extends Fragmen
         RefreshState state = mRefreshLayout.getState();
 
         if (state.isHeader && state.isOpening) {
-            Log.e("finishRefresh: ", "下拉刷新完成");
             mRefreshLayout.finishRefresh();
         } else if (state.isFooter && state.isOpening) {
-            Log.e("finishRefresh: ", "上拉加载完成");
-            mRefreshLayout.finishLoadMore();
-        } else {
-            Log.e("finishRefresh: ", "上下完成");
-            mRefreshLayout.finishRefresh();
             mRefreshLayout.finishLoadMore();
         }
 
