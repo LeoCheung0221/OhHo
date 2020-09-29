@@ -1,6 +1,7 @@
 package com.tufusi.ohho.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,17 +69,13 @@ public abstract class AbsListFragment<T, M extends AbsViewModel> extends Fragmen
         mAdapter = getAdapter();
         mRecyclerView.setAdapter(mAdapter);
 
+        genericViewModel();
         afterCreateView();
 
         return binding.getRoot();
     }
 
-    protected abstract void afterCreateView();
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
+    private void genericViewModel() {
         //利用 子类传递的 泛型参数实例化出 AbsViewModel 对象
         ParameterizedType type = (ParameterizedType) getClass().getGenericSuperclass();
         assert type != null;
@@ -106,6 +103,8 @@ public abstract class AbsListFragment<T, M extends AbsViewModel> extends Fragmen
         }
     }
 
+    protected abstract void afterCreateView();
+
     /**
      * 提交数据进行刷新
      *
@@ -124,8 +123,14 @@ public abstract class AbsListFragment<T, M extends AbsViewModel> extends Fragmen
         RefreshState state = mRefreshLayout.getState();
 
         if (state.isHeader && state.isOpening) {
+            Log.e("finishRefresh: ", "下拉刷新完成");
             mRefreshLayout.finishRefresh();
         } else if (state.isFooter && state.isOpening) {
+            Log.e("finishRefresh: ", "上拉加载完成");
+            mRefreshLayout.finishLoadMore();
+        } else {
+            Log.e("finishRefresh: ", "上下完成");
+            mRefreshLayout.finishRefresh();
             mRefreshLayout.finishLoadMore();
         }
 

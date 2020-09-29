@@ -3,6 +3,7 @@ package com.tufusi.ohho.ui;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.paging.DataSource;
 import androidx.paging.LivePagedListBuilder;
@@ -16,13 +17,14 @@ import androidx.paging.PagedList;
  */
 public abstract class AbsViewModel<T> extends ViewModel {
 
+    protected PagedList.Config config;
     private DataSource dataSource;
     private LiveData<PagedList<T>> pageData;
     private MutableLiveData<Boolean> boundaryPageData = new MutableLiveData<>();
 
     public AbsViewModel() {
         // 设置分页信息配置
-        PagedList.Config config = new PagedList.Config.Builder()
+        config = new PagedList.Config.Builder()
                 .setPageSize(10)
                 .setInitialLoadSizeHint(12)
 //                .setMaxSize(100) // 共加载多少数据，一般都不会知道
@@ -38,6 +40,13 @@ public abstract class AbsViewModel<T> extends ViewModel {
                 // 用于侦听PagedList加载状态的边界回调
                 .setBoundaryCallback(callback)
                 .build();
+
+//        pageData.observeForever(new Observer<PagedList<T>>() {
+//            @Override
+//            public void onChanged(PagedList<T> pagedList) {
+//                mAdapter.submitList(pagedList);
+//            }
+//        });
     }
 
     public MutableLiveData<Boolean> getBoundaryPageData() {
@@ -70,7 +79,6 @@ public abstract class AbsViewModel<T> extends ViewModel {
         // 当最后一条数据被加载后才会回调此方法
         @Override
         public void onItemAtEndLoaded(@NonNull T itemAtEnd) {
-            super.onItemAtEndLoaded(itemAtEnd);
         }
     };
 
@@ -78,7 +86,9 @@ public abstract class AbsViewModel<T> extends ViewModel {
         @NonNull
         @Override
         public DataSource create() {
-            dataSource = createDataSource();
+            if (dataSource == null || dataSource.isInvalid()){
+                dataSource = createDataSource();
+            }
             return dataSource;
         }
     };

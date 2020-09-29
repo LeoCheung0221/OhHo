@@ -148,7 +148,7 @@ public abstract class OhRequest<T, R extends OhRequest> implements Cloneable {
                 @Override
                 public void run() {
                     OhResponse<T> response = readCache();
-                    if (callback != null) {
+                    if (callback != null && response.body != null) {
                         callback.onCacheSuccess(response);
                     }
                 }

@@ -34,7 +34,8 @@
         <com.tufusi.libcommon.view.EmptyView
             android:id="@+id/empty_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dp_100" />
 
     </FrameLayout>
 </layout>

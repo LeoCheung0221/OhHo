@@ -1,10 +1,14 @@
 package com.tufusi.ohho.ui.home;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.arch.core.executor.ArchTaskExecutor;
+import androidx.lifecycle.MutableLiveData;
 import androidx.paging.DataSource;
 import androidx.paging.ItemKeyedDataSource;
+import androidx.paging.PagedList;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
@@ -14,30 +18,37 @@ import com.tufusi.libnetwork.OhResponse;
 import com.tufusi.libnetwork.ResultCallback;
 import com.tufusi.ohho.model.Feed;
 import com.tufusi.ohho.ui.AbsViewModel;
+import com.tufusi.ohho.ui.MutableDataSource;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class HomeViewModel extends AbsViewModel<Feed> {
 
     private volatile boolean withCache = true;
+    private MutableLiveData<PagedList<Feed>> cacheLiveData = new MutableLiveData<>();
+    private AtomicBoolean loadAfter = new AtomicBoolean(false);
 
     @Override
     public DataSource createDataSource() {
-        return mDataSource;
+        return new FeedDataSource();
     }
 
+    public MutableLiveData<PagedList<Feed>> getCacheLiveData() {
+        return cacheLiveData;
+    }
 
     /**
      * 首页加载 先加载缓存，再加载网络，随后更新本地缓存
      */
-    ItemKeyedDataSource<Long, Feed> mDataSource = new ItemKeyedDataSource<Long, Feed>() {
+    class FeedDataSource extends ItemKeyedDataSource<Long, Feed> {
 
         // 加载初始化数据时调用
         @Override
         public void loadInitial(@NonNull LoadInitialParams<Long> params, @NonNull LoadInitialCallback<Feed> callback) {
-            Log.e("homeviewmodel", "loadInitial: ");
+            Log.e("FeedDataSource", "loadInitial: ");
             loadData(0L, callback);
             withCache = false;
         }
@@ -45,7 +56,7 @@ public class HomeViewModel extends AbsViewModel<Feed> {
         // 加载分页数据时调用
         @Override
         public void loadAfter(@NonNull LoadParams<Long> params, @NonNull LoadCallback<Feed> callback) {
-            Log.e("homeviewmodel", "loadAfter: ");
+            Log.e("FeedDataSource", "loadAfter: ");
             loadData(params.key, callback);
         }
 
@@ -60,11 +71,13 @@ public class HomeViewModel extends AbsViewModel<Feed> {
         public Long getKey(@NonNull Feed item) {
             return item.getId();
         }
-    };
+    }
 
     private void loadData(Long key, ItemKeyedDataSource.LoadCallback<Feed> callback) {
-//        if (key > 0) {
-//        }
+        if (key > 0) {
+            // 如果此次加载属于分页的，则设置为 true
+            loadAfter.set(true);
+        }
         OhRequest request = ApiService.get("/feeds/queryHotFeedsList")
                 .addParam("feedType", null)
                 .addParam("userId", 0)
@@ -81,7 +94,15 @@ public class HomeViewModel extends AbsViewModel<Feed> {
             request.execute(new ResultCallback<List<Feed>>() {
                 @Override
                 public void onCacheSuccess(OhResponse<List<Feed>> response) {
-                    Log.e("onCacheSuccess", "onCacheSuccess: " + response.body);
+                    Log.e("loadData：", "onCacheSuccess: " + (response.body != null ? response.body.size() : 0));
+                    // 创建 pageList 对象需要绑定一个 DataSource 将缓存数据和 DataSource关联起来
+                    MutableDataSource dataSource = new MutableDataSource<Integer, Feed>();
+                    dataSource.data.addAll(response.body);
+
+                    // 关联 pageList 和 DataSource
+                    PagedList newPageList = dataSource.createNewPageList(config);
+                    cacheLiveData.postValue(newPageList);
+
                 }
             });
         }
@@ -98,9 +119,30 @@ public class HomeViewModel extends AbsViewModel<Feed> {
             if (key > 0L) {
                 // 告诉UI层关闭上拉加载动画，如果上拉无数据，通过 liveData发送数据
                 getBoundaryPageData().postValue(data.size() > 0);
+                loadAfter.set(false);
             }
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
+
+        Log.e("loadData", "loadData key: " + key);
+    }
+
+    /**
+     * 这里需要做一个同步位， 防止 paging 和 我们主动操作加载 ，造成数据重复
+     */
+    @SuppressLint("RestrictedApi")
+    public void loadAfter(long id, ItemKeyedDataSource.LoadCallback<Feed> callback) {
+        // 如果加载过，直接 return
+        if (loadAfter.get()) {
+            callback.onResult(Collections.emptyList());
+            return;
+        }
+        ArchTaskExecutor.getIOThreadExecutor().execute(new Runnable() {
+            @Override
+            public void run() {
+                loadData(id, callback);
+            }
+        });
     }
 }
