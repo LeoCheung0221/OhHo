@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.arch.core.executor.ArchTaskExecutor;
 
 import com.alibaba.fastjson.JSON;
-import com.tufusi.cache.CacheManager;
+import com.tufusi.libnetwork.cache.CacheManager;
 import com.tufusi.libnetwork.manager.UrlCreator;
 import com.tufusi.libnetwork.parse.IConvert;
 
@@ -136,7 +136,7 @@ public abstract class OhRequest<T, R extends OhRequest> implements Cloneable {
             result = new OhResponse<>();
             result.message = e.getMessage();
         }
-        Log.e("execute result: ", JSON.toJSONString(result));
+        Log.d("execute result: ", JSON.toJSONString(result));
         return result;
     }
 

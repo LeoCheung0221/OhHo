@@ -4,7 +4,7 @@ import android.app.Application;
 
 import com.tufusi.libnetwork.ApiService;
 
-import static com.tufusi.ohho.app.Constants.DEV_TAG;
+import static com.tufusi.ohho.app.AppConstants.DEV_TAG;
 
 /**
  * Created by 鼠夏目 on 2020/9/27.

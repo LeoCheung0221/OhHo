@@ -1,5 +1,7 @@
 package com.tufusi.ohho.model;
 
+import androidx.databinding.BaseObservable;
+
 import java.io.Serializable;
 
 /**
@@ -8,7 +10,7 @@ import java.io.Serializable;
  * @author 鼠夏目
  * @description
  */
-public class User implements Serializable {
+public class User extends BaseObservable implements Serializable {
 
     /**
      * id : 1250

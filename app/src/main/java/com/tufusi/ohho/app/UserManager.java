@@ -6,7 +6,7 @@ import android.content.Intent;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.tufusi.cache.CacheManager;
+import com.tufusi.libnetwork.cache.CacheManager;
 import com.tufusi.ohho.model.User;
 import com.tufusi.ohho.ui.login.LoginActivity;
 
@@ -58,7 +58,7 @@ public class UserManager {
     }
 
     public boolean isLogin() {
-        return mUser != null && mUser.getExpires_time() < System.currentTimeMillis();
+        return mUser != null && mUser.getExpires_time() > System.currentTimeMillis();
     }
 
     public User getUser() {

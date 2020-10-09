@@ -1,4 +1,4 @@
-package com.tufusi.cache;
+package com.tufusi.libnetwork.cache;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -43,6 +43,7 @@ public class CacheManager {
         try {
             bais = new ByteArrayInputStream(data);
             ois = new ObjectInputStream(bais);
+
             return ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -69,6 +70,8 @@ public class CacheManager {
             oos = new ObjectOutputStream(baos);
             oos.writeObject(body);
             oos.flush();
+
+            return baos.toByteArray();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

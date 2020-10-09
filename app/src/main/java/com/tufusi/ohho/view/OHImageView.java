@@ -96,10 +96,10 @@ public class OHImageView extends AppCompatImageView {
         // 如果宽大于高，则宽度全填满，高度等比例自适应
         if (width >= height) {
             finalWidth = maxWidth;
-            finalHeight = (int) (height * (finalWidth / width * 1.0f));
+            finalHeight = (int) (height * finalWidth / width * 1.0f);
         } else {
             finalHeight = maxHeight;
-            finalWidth = (int) (width * (finalHeight / height * 1.0f));
+            finalWidth = (int) (width * finalHeight / height * 1.0f);
         }
 
         ViewGroup.LayoutParams params = getLayoutParams();
@@ -107,10 +107,10 @@ public class OHImageView extends AppCompatImageView {
         params.height = finalHeight;
 
         // 如果高度大于宽度的图片，则适当设置 marginLeft
-        if (params instanceof FrameLayout.LayoutParams){
-            ((FrameLayout.LayoutParams)params).leftMargin = height > width ? ScreenUtils.dip2px(marginLeft) : 0;
-        }else if (params instanceof LinearLayout.LayoutParams){
-            ((LinearLayout.LayoutParams)params).leftMargin = height > width ? ScreenUtils.dip2px(marginLeft) : 0;
+        if (params instanceof FrameLayout.LayoutParams) {
+            ((FrameLayout.LayoutParams) params).leftMargin = height > width ? ScreenUtils.dip2px(marginLeft) : 0;
+        } else if (params instanceof LinearLayout.LayoutParams) {
+            ((LinearLayout.LayoutParams) params).leftMargin = height > width ? ScreenUtils.dip2px(marginLeft) : 0;
         }
 
         setLayoutParams(params);

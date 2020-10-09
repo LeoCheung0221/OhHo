@@ -1,4 +1,4 @@
-package com.tufusi.cache;
+package com.tufusi.libnetwork.cache;
 
 import androidx.room.Dao;
 import androidx.room.Delete;

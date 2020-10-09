@@ -2,10 +2,12 @@ package com.tufusi.ohho;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.camera.core.AppConfig;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
@@ -34,12 +36,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         navView = findViewById(R.id.nav_view);
 
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
-        assert fragment != null;
         navController = NavHostFragment.findNavController(fragment);
+        NavGraphBuilder.builder(this, getSupportFragmentManager(), fragment.getId(), navController);
 
         navView.setOnNavigationItemSelectedListener(this);
 
-        NavGraphBuilder.builder(this, getSupportFragmentManager(), fragment.getId(), navController);
     }
 
     @Override
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 UserManager.get().login(this).observe(this, new Observer<User>() {
                     @Override
                     public void onChanged(User user) {
+                        Log.e("当前nav: ", menuItem.getTitle().toString());
                         navView.setSelectedItemId(menuItem.getItemId());
                     }
                 });
@@ -64,4 +66,5 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         navController.navigate(menuItem.getItemId());
         return !TextUtils.isEmpty(menuItem.getTitle());
     }
+
 }

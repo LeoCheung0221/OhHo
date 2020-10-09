@@ -1,11 +1,8 @@
-package com.tufusi.cache;
+package com.tufusi.libnetwork.cache;
 
-import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.room.migration.Migration;
-import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.tufusi.libcommon.AppGlobal;
 
@@ -50,7 +47,7 @@ public abstract class CacheDatabase extends RoomDatabase {
         return database;
     }
 
-    //    static Migration sMigration = new Migration(3, 5) {
+//    static Migration sMigration = new Migration(3, 5) {
 //        @Override
 //        public void migrate(@NonNull SupportSQLiteDatabase database) {
 //            database.execSQL("alter table teacher rename to student");

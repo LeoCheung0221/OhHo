@@ -1,4 +1,4 @@
-package com.tufusi.cache;
+package com.tufusi.libnetwork.cache;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;

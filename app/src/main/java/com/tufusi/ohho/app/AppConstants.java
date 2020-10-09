@@ -6,12 +6,12 @@ package com.tufusi.ohho.app;
  * @author 鼠夏目
  * @description
  */
-public class Constants {
+public class AppConstants {
 
     /**
      * 是否是家里环境
      */
-    public static final boolean DEV_TAG = false;
+    public static final boolean DEV_TAG = true;
 
     /**
      * QQ 登录 key
@@ -23,4 +23,4 @@ public class Constants {
      */
     public static final String APP_SECRET = "";
 
-} 
+}
