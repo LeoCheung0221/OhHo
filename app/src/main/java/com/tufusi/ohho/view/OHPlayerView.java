@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.tufusi.ohho.R;
-import com.tufusi.ohho.utils.ScreenUtils;
+import com.tufusi.libcommon.utils.ScreenUtils;
 
 /**
  * Created by 鼠夏目 on 2020/9/27.

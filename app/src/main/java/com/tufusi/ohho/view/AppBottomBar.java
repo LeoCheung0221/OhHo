@@ -19,7 +19,7 @@ import com.tufusi.ohho.R;
 import com.tufusi.ohho.model.BottomBar;
 import com.tufusi.ohho.model.Destination;
 import com.tufusi.ohho.app.AppRouteConfig;
-import com.tufusi.ohho.utils.ScreenUtils;
+import com.tufusi.libcommon.utils.ScreenUtils;
 
 import java.util.List;
 

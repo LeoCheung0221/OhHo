@@ -18,7 +18,7 @@ import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.tufusi.ohho.utils.ScreenUtils;
+import com.tufusi.libcommon.utils.ScreenUtils;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
 

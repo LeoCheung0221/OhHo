@@ -15,9 +15,11 @@
 
         <import type="com.tufusi.ohho.utils.StringConvert" />
 
-        <import type="com.tufusi.ohho.ui.home.InteractionPresenter" />
+        <import type="com.tufusi.ohho.ui.InteractionPresenter" />
 
         <import type="androidx.lifecycle.LifecycleOwner" />
+
+        <import type="android.content.Context" />
     </data>
 
     <LinearLayout
@@ -40,8 +42,10 @@
             app:iconGravity="textStart"
             app:iconPadding="@dimen/dp_4"
             app:iconTint="@{feed.ugc.hasLiked?@color/color_theme:@color/color_3d3}"
-            tools:icon="@drawable/icon_cell_liked"
-            tools:text="1000" />
+            tools:icon="@drawable/icon_cell_like"
+            tools:iconTint="@color/color_3d3"
+            tools:text="1000"
+            tools:textColor="@color/color_3d3" />
 
         <com.google.android.material.button.MaterialButton
             android:layout_width="0dp"
@@ -57,7 +61,9 @@
             app:iconPadding="@dimen/dp_4"
             app:iconTint="@{feed.ugc.hasdiss?@color/color_theme:@color/color_3d3}"
             tools:icon="@drawable/icon_cell_diss"
-            tools:text="1000" />
+            tools:iconTint="@color/color_3d3"
+            tools:text="1000"
+            tools:textColor="@color/color_3d3" />
 
         <com.google.android.material.button.MaterialButton
             android:layout_width="0dp"
@@ -71,13 +77,16 @@
             app:iconPadding="@dimen/dp_4"
             app:iconTint="@color/color_3d3"
             tools:icon="@drawable/icon_cell_comment"
-            tools:text="1000" />
+            tools:iconTint="@color/color_3d3"
+            tools:text="1000"
+            tools:textColor="@color/color_3d3" />
 
         <com.google.android.material.button.MaterialButton
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:backgroundTint="@color/color_white"
+            android:onClick="@{()->InteractionPresenter.openShare(((Context)lifecycleOwner), feed)}"
             android:text="@{feed.ugc.shareCount>0?StringConvert.convertFeedUgc(feed.ugc.shareCount):@string/share}"
             android:textSize="@dimen/sp_14"
             app:icon="@drawable/icon_cell_share"
@@ -85,7 +94,9 @@
             app:iconPadding="@dimen/dp_4"
             app:iconTint="@color/color_3d3"
             tools:icon="@drawable/icon_cell_share"
-            tools:text="1000" />
+            tools:iconTint="@color/color_3d3"
+            tools:text="1000"
+            tools:textColor="@color/color_3d3" />
 
     </LinearLayout>
 </layout>

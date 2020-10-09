@@ -42,12 +42,14 @@ public class Ugc extends BaseObservable implements Serializable {
         this.likeCount = likeCount;
     }
 
+    @Bindable
     public int getShareCount() {
         return shareCount;
     }
 
     public void setShareCount(int shareCount) {
         this.shareCount = shareCount;
+        notifyPropertyChanged(BR._all);
     }
 
     public int getCommentCount() {
@@ -91,10 +93,10 @@ public class Ugc extends BaseObservable implements Serializable {
     }
 
     public void setHasdiss(boolean hasdiss) {
-        if (this.hasdiss == hasdiss){
+        if (this.hasdiss == hasdiss) {
             return;
         }
-        if (hasdiss){
+        if (hasdiss) {
             setHasLiked(false);
         }
         this.hasdiss = hasdiss;

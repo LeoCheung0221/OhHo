@@ -1,4 +1,4 @@
-package com.tufusi.ohho.utils;
+package com.tufusi.libcommon.utils;
 
 import android.util.DisplayMetrics;
 

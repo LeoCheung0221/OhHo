@@ -1,7 +1,10 @@
-package com.tufusi.ohho.ui.home;
+package com.tufusi.ohho.ui;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.database.Observable;
+import android.text.TextUtils;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.arch.core.executor.ArchTaskExecutor;
@@ -17,6 +20,7 @@ import com.tufusi.libnetwork.ResultCallback;
 import com.tufusi.ohho.app.UserManager;
 import com.tufusi.ohho.model.Feed;
 import com.tufusi.ohho.model.User;
+import com.tufusi.ohho.ui.share.ShareDialog;
 
 
 /**
@@ -30,6 +34,8 @@ public class InteractionPresenter {
     private static final String URL_TOGGLE_FEED_LIKE = "/ugc/toggleFeedLike";
 
     private static final String URL_TOGGLE_FEED_DISS = "/ugc/dissFeed";
+
+    private static final String URL_FEED_SHARE = "/ugc/increaseShareCount";
 
     /**
      * 给帖子点赞/取消点赞  和踩是互斥的操作
@@ -56,6 +62,41 @@ public class InteractionPresenter {
         } else {
             toggleFeedDissInternal(feed);
         }
+    }
+
+    public static void openShare(Context context, Feed feed) {
+        String shareContent = feed.getFeeds_text();
+        if (!TextUtils.isEmpty(feed.getUrl())) {
+            shareContent = feed.getUrl();
+        } else if (!TextUtils.isEmpty(feed.getCover())) {
+            shareContent = feed.getCover();
+        }
+        ShareDialog shareDialog = new ShareDialog(context);
+        shareDialog.setShareContent(shareContent);
+        shareDialog.setShareItemClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                ApiService.get(URL_FEED_SHARE)
+                        .addParam("itemId", feed.getItemId())
+                        .execute(new ResultCallback<JSONObject>() {
+                            @Override
+                            public void onSuccess(OhResponse<JSONObject> response) {
+                                if (response.body != null) {
+                                    int count = response.body.getIntValue("count");
+                                    feed.getUgc().setShareCount(count);
+                                }
+                            }
+
+                            @Override
+                            public void onError(OhResponse<JSONObject> response) {
+                                showToast(response.message);
+                            }
+                        });
+            }
+        });
+
+        shareDialog.show();
     }
 
     private static void toggleFeedDissInternal(Feed feed) {
