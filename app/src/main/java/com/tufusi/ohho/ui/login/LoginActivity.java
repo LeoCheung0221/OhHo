@@ -17,6 +17,7 @@ import com.tufusi.libnetwork.OhResponse;
 import com.tufusi.libnetwork.ResultCallback;
 import com.tufusi.ohho.R;
 import com.tufusi.ohho.app.Constants;
+import com.tufusi.ohho.app.UserManager;
 import com.tufusi.ohho.model.User;
 
 import org.json.JSONException;

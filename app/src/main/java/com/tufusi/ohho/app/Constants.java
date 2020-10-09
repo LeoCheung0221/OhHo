@@ -16,7 +16,7 @@ public class Constants {
     /**
      * QQ 登录 key
      */
-    public static final String APP_KEY = "";
+    public static final String APP_KEY = "101905279";
 
     /**
      * QQ 登录 secret

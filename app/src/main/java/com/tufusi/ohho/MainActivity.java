@@ -6,26 +6,21 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.camera.core.AppConfig;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.tufusi.ohho.app.AppRouteConfig;
 import com.tufusi.ohho.app.NavGraphBuilder;
 import com.tufusi.ohho.model.Destination;
 import com.tufusi.ohho.model.User;
-import com.tufusi.ohho.ui.login.UserManager;
+import com.tufusi.ohho.app.UserManager;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import okhttp3.Route;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 

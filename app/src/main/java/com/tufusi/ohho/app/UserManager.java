@@ -1,4 +1,4 @@
-package com.tufusi.ohho.ui.login;
+package com.tufusi.ohho.app;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.tufusi.cache.CacheManager;
 import com.tufusi.ohho.model.User;
+import com.tufusi.ohho.ui.login.LoginActivity;
 
 /**
  * Created by 鼠夏目 on 2020/9/29.
@@ -23,10 +24,6 @@ public class UserManager {
     private static volatile UserManager singleton = null;
     private User mUser;
 
-    public static UserManager get() {
-        return singleton;
-    }
-
     private UserManager() {
         User cache = (User) CacheManager.getCache(KEY_CACHE_USER);
         if (cache != null && cache.getExpires_time() < System.currentTimeMillis()) {
@@ -34,7 +31,7 @@ public class UserManager {
         }
     }
 
-    public static UserManager getInstance() {
+    public static UserManager get() {
         if (singleton == null) {
             synchronized (UserManager.class) {
                 if (singleton == null) {
