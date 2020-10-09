@@ -16,6 +16,7 @@ import com.tufusi.libnetwork.ApiService;
 import com.tufusi.libnetwork.OhRequest;
 import com.tufusi.libnetwork.OhResponse;
 import com.tufusi.libnetwork.ResultCallback;
+import com.tufusi.ohho.app.UserManager;
 import com.tufusi.ohho.model.Feed;
 import com.tufusi.ohho.ui.AbsViewModel;
 import com.tufusi.ohho.ui.MutableDataSource;
@@ -80,7 +81,7 @@ public class HomeViewModel extends AbsViewModel<Feed> {
         }
         OhRequest request = ApiService.get("/feeds/queryHotFeedsList")
                 .addParam("feedType", null)
-                .addParam("userId", 0)
+                .addParam("userId", UserManager.get().getUserId())
                 .addParam("feedId", key)
                 .addParam("pageCount", 10)
                 .responseRawType(new TypeReference<ArrayList<Feed>>() {

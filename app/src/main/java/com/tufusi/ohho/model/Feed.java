@@ -1,5 +1,8 @@
 package com.tufusi.ohho.model;
 
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -9,7 +12,7 @@ import java.util.Objects;
  * @author 鼠夏目
  * @description
  */
-public class Feed implements Serializable {
+public class Feed extends BaseObservable implements Serializable {
 
     public static final int IMAGE_TYPE = 1;
     public static final int VIDEO_TYPE = 2;
@@ -55,7 +58,11 @@ public class Feed implements Serializable {
         this.author = author;
     }
 
+    @Bindable
     public Ugc getUgc() {
+        if (ugc == null){
+            ugc = new Ugc();
+        }
         return ugc;
     }
 

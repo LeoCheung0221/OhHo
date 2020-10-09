@@ -9,7 +9,15 @@
             name="feed"
             type="com.tufusi.ohho.model.Feed" />
 
+        <variable
+            name="lifecycleOwner"
+            type="LifecycleOwner" />
+
         <import type="com.tufusi.ohho.utils.StringConvert" />
+
+        <import type="com.tufusi.ohho.ui.home.InteractionPresenter" />
+
+        <import type="androidx.lifecycle.LifecycleOwner" />
     </data>
 
     <LinearLayout
@@ -24,12 +32,14 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:backgroundTint="@color/color_white"
-            android:text="@{feed.ugc.likeCount>=0?StringConvert.convertFeedUgc(feed.ugc.likeCount):null}"
+            android:onClick="@{()->InteractionPresenter.toggleFeedLike(lifecycleOwner,feed)}"
+            android:text="@{feed.ugc.likeCount>0?StringConvert.convertFeedUgc(feed.ugc.likeCount):@string/like}"
             android:textColor="@{feed.ugc.hasLiked?@color/color_theme:@color/color_3d3}"
             android:textSize="@dimen/sp_14"
             app:icon="@{feed.ugc.hasLiked?@drawable/icon_cell_liked:@drawable/icon_cell_like}"
             app:iconGravity="textStart"
             app:iconPadding="@dimen/dp_4"
+            app:iconTint="@{feed.ugc.hasLiked?@color/color_theme:@color/color_3d3}"
             tools:icon="@drawable/icon_cell_liked"
             tools:text="1000" />
 
@@ -38,12 +48,14 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:backgroundTint="@color/color_white"
-            android:text="踩"
+            android:onClick="@{()->InteractionPresenter.toggleFeedDiss(lifecycleOwner,feed)}"
+            android:text="@string/feed_diss"
             android:textColor="@{feed.ugc.hasdiss?@color/color_theme:@color/color_3d3}"
             android:textSize="@dimen/sp_14"
-            app:icon="@{feed.ugc.hasLiked?@drawable/icon_cell_dissed:@drawable/icon_cell_diss}"
+            app:icon="@{feed.ugc.hasdiss?@drawable/icon_cell_dissed:@drawable/icon_cell_diss}"
             app:iconGravity="textStart"
             app:iconPadding="@dimen/dp_4"
+            app:iconTint="@{feed.ugc.hasdiss?@color/color_theme:@color/color_3d3}"
             tools:icon="@drawable/icon_cell_diss"
             tools:text="1000" />
 
@@ -52,11 +64,12 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:backgroundTint="@color/color_white"
-            android:text="@{feed.ugc.commentCount>=0?StringConvert.convertFeedUgc(feed.ugc.commentCount):null}"
+            android:text="@{feed.ugc.commentCount>0?StringConvert.convertFeedUgc(feed.ugc.commentCount):@string/feed_comment}"
             android:textSize="@dimen/sp_14"
             app:icon="@drawable/icon_cell_comment"
             app:iconGravity="textStart"
             app:iconPadding="@dimen/dp_4"
+            app:iconTint="@color/color_3d3"
             tools:icon="@drawable/icon_cell_comment"
             tools:text="1000" />
 
@@ -65,11 +78,12 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:backgroundTint="@color/color_white"
-            android:text="@{feed.ugc.shareCount>=0?StringConvert.convertFeedUgc(feed.ugc.shareCount):null}"
+            android:text="@{feed.ugc.shareCount>0?StringConvert.convertFeedUgc(feed.ugc.shareCount):@string/share}"
             android:textSize="@dimen/sp_14"
             app:icon="@drawable/icon_cell_share"
             app:iconGravity="textStart"
             app:iconPadding="@dimen/dp_4"
+            app:iconTint="@color/color_3d3"
             tools:icon="@drawable/icon_cell_share"
             tools:text="1000" />
 

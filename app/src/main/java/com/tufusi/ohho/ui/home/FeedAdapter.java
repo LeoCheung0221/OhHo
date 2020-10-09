@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,6 +24,7 @@ import com.tufusi.ohho.model.Feed;
  */
 public class FeedAdapter extends PagedListAdapter<Feed, FeedAdapter.FeedViewHolder> {
 
+    private Context mContext;
     private LayoutInflater mInflater;
     private String mPageLifeTag;
 
@@ -38,6 +40,7 @@ public class FeedAdapter extends PagedListAdapter<Feed, FeedAdapter.FeedViewHold
                 return oldItem.equals(newItem);
             }
         });
+        mContext = context;
         mInflater = LayoutInflater.from(context);
         mPageLifeTag = pageLifeTag;
     }
@@ -80,11 +83,13 @@ public class FeedAdapter extends PagedListAdapter<Feed, FeedAdapter.FeedViewHold
 
                 imageBinding.setFeed(item);
                 imageBinding.feedImage.bindData(item.getCover(), item.getWidth(), item.getHeight(), 16);
+                imageBinding.setLifecycleOwner((LifecycleOwner) mContext);
             } else {
                 LayoutFeedTypeVideoBinding videoBinding = (LayoutFeedTypeVideoBinding) mBinding;
 
                 videoBinding.setFeed(item);
                 videoBinding.playView.bindData(item.getUrl(), item.getCover(), item.getWidth(), item.getHeight(), mPageLifeTag);
+                videoBinding.setLifecycleOwner((LifecycleOwner) mContext);
             }
         }
     }
