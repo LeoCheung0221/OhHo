@@ -26,7 +26,7 @@ public class UserManager {
 
     private UserManager() {
         User cache = (User) CacheManager.getCache(KEY_CACHE_USER);
-        if (cache != null && cache.getExpires_time() < System.currentTimeMillis()) {
+        if (cache != null && cache.getExpires_time() > System.currentTimeMillis()) {
             mUser = cache;
         }
     }
