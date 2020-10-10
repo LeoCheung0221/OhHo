@@ -8,6 +8,8 @@ import androidx.paging.PagedListAdapter;
 
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.tufusi.libnavannotation.FragmentDestination;
+import com.tufusi.ohho.exoplayer.PageListPlayerDetector;
+import com.tufusi.ohho.exoplayer.PageListPlayerManager;
 import com.tufusi.ohho.model.Feed;
 import com.tufusi.ohho.ui.AbsListFragment;
 import com.tufusi.ohho.ui.MutableDataSource;
@@ -16,6 +18,8 @@ import java.util.List;
 
 @FragmentDestination(pageUrl = "main/tabs/home", asStarter = true, needLogin = false)
 public class HomeFragment extends AbsListFragment<Feed, HomeViewModel> {
+
+    private PageListPlayerDetector playerDetector;
 
     @Override
     protected void afterCreateView() {
@@ -26,12 +30,29 @@ public class HomeFragment extends AbsListFragment<Feed, HomeViewModel> {
                 mAdapter.submitList(feeds);
             }
         });
+
+        playerDetector = new PageListPlayerDetector(this, mRecyclerView);
     }
 
     @Override
     public PagedListAdapter getAdapter() {
         String feedType = getArguments() == null ? "all" : getArguments().getString("feedType");
-        return new FeedAdapter(getContext(), feedType);
+        return new FeedAdapter(getContext(), feedType){
+            @Override
+            public void onViewAttachedToWindow(@NonNull FeedViewHolder holder) {
+                super.onViewAttachedToWindow(holder);
+                // 判断是否是视频类型的item
+                if (holder.isVideoType()){
+                    playerDetector.addTarget(holder.getPlayView());
+                }
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(@NonNull FeedViewHolder holder) {
+                super.onViewDetachedFromWindow(holder);
+                playerDetector.removeTarget(holder.getPlayView());
+            }
+        };
     }
 
     @Override
@@ -66,5 +87,23 @@ public class HomeFragment extends AbsListFragment<Feed, HomeViewModel> {
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         //invalidate 之后Paging会重新创建一个DataSource 重新调用它的loadInitial方法加载初始化数据
         mViewModel.getDataSource().invalidate();
+    }
+
+    @Override
+    public void onPause() {
+        playerDetector.onPause();
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        playerDetector.onResume();
+        super.onResume();
+    }
+
+    @Override
+    public void onDestroy() {
+        PageListPlayerManager.release("");
+        super.onDestroy();
     }
 }

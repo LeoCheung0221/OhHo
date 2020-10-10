@@ -14,6 +14,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.tufusi.libcommon.utils.StatusBarUtils;
 import com.tufusi.ohho.app.AppRouteConfig;
 import com.tufusi.ohho.app.NavGraphBuilder;
 import com.tufusi.ohho.model.Destination;
@@ -31,6 +32,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
+        //启用沉浸式状态栏 白底黑字
+        StatusBarUtils.fitSystemBar(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         navView = findViewById(R.id.nav_view);

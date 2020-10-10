@@ -8,6 +8,10 @@
             name="feedText"
             type="java.lang.String" />
 
+        <variable
+            name="lines"
+            type="java.lang.Integer" />
+
         <import type="android.text.TextUtils" />
 
         <import type="android.view.View" />
@@ -20,7 +24,7 @@
         android:layout_marginEnd="@dimen/dp_16"
         android:layout_marginBottom="@dimen/dp_10"
         android:ellipsize="end"
-        android:maxLines="3"
+        android:maxLines="@{lines}"
         android:text="@{feedText}"
         android:textColor="@color/color_2f2"
         android:textSize="@dimen/sp_16"

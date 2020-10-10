@@ -16,7 +16,7 @@
         <import type="com.tufusi.ohho.utils.StringConvert" />
     </data>
 
-    <FrameLayout
+    <com.tufusi.libcommon.view.CornerFrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_16"
@@ -25,7 +25,10 @@
         android:paddingStart="@dimen/dp_10"
         android:paddingTop="@dimen/dp_10"
         android:paddingEnd="@dimen/dp_10"
-        android:paddingBottom="@dimen/dp_10">
+        android:paddingBottom="@dimen/dp_10"
+        android:visibility="@{comment==null?View.GONE:View.VISIBLE}"
+        app:clip_radius="@dimen/dp_6"
+        app:clip_side="all">
 
         <!-- 神评icon -->
         <ImageView
@@ -110,7 +113,8 @@
             <FrameLayout
                 android:layout_width="@dimen/dp_80"
                 android:layout_height="@dimen/dp_80"
-                android:layout_marginTop="@dimen/dp_10">
+                android:layout_marginTop="@dimen/dp_10"
+                android:visibility="@{TextUtils.isEmpty(comment.imageUrl)?View.GONE:View.VISIBLE}">
 
                 <com.tufusi.ohho.view.OHImageView
                     android:layout_width="match_parent"
@@ -125,11 +129,11 @@
                     android:layout_height="@dimen/dp_20"
                     android:layout_gravity="center"
                     android:src="@drawable/icon_video_play"
-                    android:visibility="@{comment.commentType==2?View.VISIBLE:View.GONE}" />
+                    android:visibility="@{TextUtils.isEmpty(comment.videoUrl)?View.GONE:View.VISIBLE}" />
 
             </FrameLayout>
 
         </LinearLayout>
 
-    </FrameLayout>
+    </com.tufusi.libcommon.view.CornerFrameLayout>
 </layout>

@@ -7,6 +7,7 @@
         <variable
             name="feed"
             type="com.tufusi.ohho.model.Feed" />
+
     </data>
 
     <LinearLayout
@@ -20,8 +21,9 @@
             app:user="@{feed.author}" />
 
         <include
-            layout="@layout/layout_feed_text"
-            app:feedText="@{feed.feeds_text}" />
+            layout="@layout/layout_feed_post"
+            app:feedText="@{feed.feeds_text}"
+            app:lines="@{3}" />
 
         <!-- 图片区域 -->
         <com.tufusi.ohho.view.OHImageView

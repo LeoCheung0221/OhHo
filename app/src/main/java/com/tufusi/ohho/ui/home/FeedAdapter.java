@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.tufusi.ohho.databinding.LayoutFeedTypeImageBinding;
 import com.tufusi.ohho.databinding.LayoutFeedTypeVideoBinding;
 import com.tufusi.ohho.model.Feed;
+import com.tufusi.ohho.view.OHPlayerView;
 
 /**
  * Created by 鼠夏目 on 2020/9/27.
@@ -48,7 +49,7 @@ public class FeedAdapter extends PagedListAdapter<Feed, FeedAdapter.FeedViewHold
     @Override
     public int getItemViewType(int position) {
         Feed feed = getItem(position);
-        return feed != null ? feed.getItemType() : 1;
+        return feed != null ? feed.getItemType() : 0;
     }
 
     @NonNull
@@ -71,6 +72,7 @@ public class FeedAdapter extends PagedListAdapter<Feed, FeedAdapter.FeedViewHold
     public class FeedViewHolder extends RecyclerView.ViewHolder {
 
         private final ViewDataBinding mBinding;
+        private OHPlayerView playerView;
 
         public FeedViewHolder(@NonNull View itemView, ViewDataBinding binding) {
             super(itemView);
@@ -90,7 +92,17 @@ public class FeedAdapter extends PagedListAdapter<Feed, FeedAdapter.FeedViewHold
                 videoBinding.setFeed(item);
                 videoBinding.playView.bindData(item.getUrl(), item.getCover(), item.getWidth(), item.getHeight(), mPageLifeTag);
                 videoBinding.setLifecycleOwner((LifecycleOwner) mContext);
+
+                playerView = videoBinding.playView;
             }
+        }
+
+        public boolean isVideoType(){
+            return mBinding instanceof LayoutFeedTypeVideoBinding;
+        }
+
+        public OHPlayerView getPlayView(){
+            return playerView;
         }
     }
 }

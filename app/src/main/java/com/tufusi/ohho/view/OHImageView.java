@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,7 @@ import com.bumptech.glide.request.transition.Transition;
 import com.tufusi.libcommon.utils.ScreenUtils;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 /**
  * Created by 鼠夏目 on 2020/9/25.
@@ -43,15 +45,26 @@ public class OHImageView extends AppCompatImageView {
         super(context, attrs, defStyleAttr);
     }
 
+    public void setImageUrl(String imageUrl) {
+        setImageUrl(this, imageUrl, false);
+    }
+
+    @BindingAdapter(value = {"image_url", "isCircle"})
+    public static void setImageUrl(OHImageView view, String imageUrl, boolean isCircle) {
+        setImageUrl(view, imageUrl, isCircle, 0);
+    }
+
     /**
      * requireAll 默认为true，代表所设定的参数需要全部传递
      */
     @SuppressLint("CheckResult")
-    @BindingAdapter(value = {"image_url", "isCircle"}, requireAll = false)
-    public static void setImageUrl(OHImageView view, String imageUrl, boolean isCircle) {
+    @BindingAdapter(value = {"image_url", "isCircle", "radius"}, requireAll = false)
+    public static void setImageUrl(OHImageView view, String imageUrl, boolean isCircle, int radius) {
         RequestBuilder<Drawable> builder = Glide.with(view).load(imageUrl);
         if (isCircle) {
             builder.transform(new CenterCrop());
+        } else if (radius > 0) {
+            builder.transform(new RoundedCornersTransformation(ScreenUtils.dip2px(radius), 0));
         }
         // 为了防止图片过大，传入图片大小做限制
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();

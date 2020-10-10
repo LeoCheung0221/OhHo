@@ -2,7 +2,6 @@ package com.tufusi.ohho.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.database.Observable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;

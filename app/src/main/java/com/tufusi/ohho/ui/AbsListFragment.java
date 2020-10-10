@@ -52,6 +52,8 @@ public abstract class AbsListFragment<T, M extends AbsViewModel> extends Fragmen
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = LayoutRefreshViewBinding.inflate(inflater, container, false);
+        binding.getRoot().setFitsSystemWindows(true);
+
         mRefreshLayout = binding.refreshLayout;
         mRecyclerView = binding.recyclerView;
         mEmptyView = binding.emptyView;

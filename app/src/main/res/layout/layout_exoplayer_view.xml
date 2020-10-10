@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- keepScreenOn： 保持屏幕常亮 -->
+<!-- use_controller：是否使用 PlayerView 默认提供的播放控制器  -->
+<!-- show_timeout： 自定义播放器和系统PlayerView绑定的时候 ,多久之后可以自动隐藏-->
+<!-- keep_content_on_player_reset： player 重置的时候是否保留最后一帧 (上下滑动可以让播放器结束时显示最后一帧)-->
+<!-- surface_type： 显示视频画面View的类型 是球形画面、texture_view 还是 surface_view -->
+<!-- resize_mode： 视频画面帧的缩放形式 -->
+<!-- show_buffering： 当视频加载时是否展示加载框 -->
+<!-- player_layout_id： 指定 PlayerView 样式 -->
+<com.google.android.exoplayer2.ui.PlayerView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/player_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:keepScreenOn="true"
+    android:orientation="vertical"
+    app:keep_content_on_player_reset="false"
+    app:player_layout_id="@layout/layout_simple_exoplayer_view"
+    app:resize_mode="zoom"
+    app:show_buffering="never"
+    app:show_timeout="1000"
+    app:surface_type="texture_view"
+    app:use_controller="false">
+
+</com.google.android.exoplayer2.ui.PlayerView>

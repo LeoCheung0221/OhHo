@@ -11,13 +11,11 @@
 
         <variable
             name="lifecycleOwner"
-            type="LifecycleOwner" />
+            type="androidx.lifecycle.LifecycleOwner" />
 
         <import type="com.tufusi.ohho.utils.StringConvert" />
 
         <import type="com.tufusi.ohho.ui.InteractionPresenter" />
-
-        <import type="androidx.lifecycle.LifecycleOwner" />
 
         <import type="android.content.Context" />
     </data>
@@ -38,6 +36,7 @@
             android:text="@{feed.ugc.likeCount>0?StringConvert.convertFeedUgc(feed.ugc.likeCount):@string/like}"
             android:textColor="@{feed.ugc.hasLiked?@color/color_theme:@color/color_3d3}"
             android:textSize="@dimen/sp_14"
+            app:cornerRadius="0dp"
             app:icon="@{feed.ugc.hasLiked?@drawable/icon_cell_liked:@drawable/icon_cell_like}"
             app:iconGravity="textStart"
             app:iconPadding="@dimen/dp_4"
@@ -56,6 +55,7 @@
             android:text="@string/feed_diss"
             android:textColor="@{feed.ugc.hasdiss?@color/color_theme:@color/color_3d3}"
             android:textSize="@dimen/sp_14"
+            app:cornerRadius="0dp"
             app:icon="@{feed.ugc.hasdiss?@drawable/icon_cell_dissed:@drawable/icon_cell_diss}"
             app:iconGravity="textStart"
             app:iconPadding="@dimen/dp_4"
@@ -73,6 +73,7 @@
             android:text="@{feed.ugc.commentCount>0?StringConvert.convertFeedUgc(feed.ugc.commentCount):@string/feed_comment}"
             android:textColor="@color/color_3d3"
             android:textSize="@dimen/sp_14"
+            app:cornerRadius="0dp"
             app:icon="@drawable/icon_cell_comment"
             app:iconGravity="textStart"
             app:iconPadding="@dimen/dp_4"
@@ -91,6 +92,7 @@
             android:text="@{feed.ugc.shareCount>0?StringConvert.convertFeedUgc(feed.ugc.shareCount):@string/share}"
             android:textColor="@color/color_3d3"
             android:textSize="@dimen/sp_14"
+            app:cornerRadius="0dp"
             app:icon="@drawable/icon_cell_share"
             app:iconGravity="textStart"
             app:iconPadding="@dimen/dp_4"
