@@ -11,7 +11,7 @@ public class AppConstants {
     /**
      * 是否是家里环境
      */
-    public static final boolean DEV_TAG = false;
+    public static final boolean DEV_TAG = true;
 
     /**
      * QQ 登录 key

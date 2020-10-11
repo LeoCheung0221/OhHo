@@ -3,6 +3,7 @@ package com.tufusi.ohho.view;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -82,6 +83,12 @@ public class OHImageView extends AppCompatImageView {
      * 需要图片的宽高，这里网络返回
      */
     public void bindData(String imageUrl, int widthPx, int heightPx, int marginLeft, int maxWidth, int maxHeight) {
+        if (TextUtils.isEmpty(imageUrl)) {
+            setVisibility(GONE);
+            return;
+        } else {
+            setVisibility(VISIBLE);
+        }
         if (widthPx <= 0 || heightPx <= 0) {
             Glide.with(this).load(imageUrl).into(new SimpleTarget<Drawable>() {
                 @Override
