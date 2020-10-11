@@ -1,17 +1,21 @@
 package com.tufusi.ohho.app;
 
 import android.content.res.AssetManager;
+import android.icu.text.SymbolTable;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.tufusi.libcommon.AppGlobal;
 import com.tufusi.ohho.model.BottomBar;
 import com.tufusi.ohho.model.Destination;
+import com.tufusi.ohho.model.SofaTab;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 /**
@@ -24,6 +28,7 @@ public class AppRouteConfig {
 
     private static HashMap<String, Destination> sDestConfig;
     private static BottomBar sBottomBarConfig;
+    private static SofaTab sSofaTabConfig;
 
     /**
      * 获取页面路径路由配置
@@ -46,6 +51,24 @@ public class AppRouteConfig {
             sBottomBarConfig = JSON.parseObject(content, BottomBar.class);
         }
         return sBottomBarConfig;
+    }
+
+    /**
+     * 获取沙发页签相关tab配置
+     */
+    public static SofaTab getSofaTabConfig() {
+        if (sSofaTabConfig == null) {
+            String content = parseFile("sofa_tabs_config.json");
+            sSofaTabConfig = JSON.parseObject(content, SofaTab.class);
+
+            Collections.sort(sSofaTabConfig.getTabs(), new Comparator<SofaTab.Tabs>() {
+                @Override
+                public int compare(SofaTab.Tabs o1, SofaTab.Tabs o2) {
+                    return o1.getIndex() < o2.getIndex() ? -1 : 1;
+                }
+            });
+        }
+        return sSofaTabConfig;
     }
 
     /**

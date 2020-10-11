@@ -31,6 +31,7 @@ public class HomeViewModel extends AbsViewModel<Feed> {
     private volatile boolean withCache = true;
     private MutableLiveData<PagedList<Feed>> cacheLiveData = new MutableLiveData<>();
     private AtomicBoolean loadAfter = new AtomicBoolean(false);
+    private String mFeedType;
 
     @Override
     public DataSource createDataSource() {
@@ -39,6 +40,10 @@ public class HomeViewModel extends AbsViewModel<Feed> {
 
     public MutableLiveData<PagedList<Feed>> getCacheLiveData() {
         return cacheLiveData;
+    }
+
+    public void setFeedType(String feedType) {
+        mFeedType = feedType;
     }
 
     /**
@@ -80,7 +85,7 @@ public class HomeViewModel extends AbsViewModel<Feed> {
             loadAfter.set(true);
         }
         OhRequest request = ApiService.get("/feeds/queryHotFeedsList")
-                .addParam("feedType", null)
+                .addParam("feedType", mFeedType)
                 .addParam("userId", UserManager.get().getUserId())
                 .addParam("feedId", key)
                 .addParam("pageCount", 10)

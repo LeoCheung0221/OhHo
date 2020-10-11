@@ -1,6 +1,9 @@
 package com.tufusi.ohho.ui.home;
 
+import android.os.Bundle;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.paging.ItemKeyedDataSource;
 import androidx.paging.PagedList;
@@ -20,6 +23,16 @@ import java.util.List;
 public class HomeFragment extends AbsListFragment<Feed, HomeViewModel> {
 
     private PageListPlayerDetector playerDetector;
+    private String feedType;
+
+    public static HomeFragment newInstance(String feedType) {
+
+        Bundle args = new Bundle();
+        args.putString("feedType", feedType);
+        HomeFragment fragment = new HomeFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     protected void afterCreateView() {
@@ -32,25 +45,35 @@ public class HomeFragment extends AbsListFragment<Feed, HomeViewModel> {
         });
 
         playerDetector = new PageListPlayerDetector(this, mRecyclerView);
+        mViewModel.setFeedType(feedType);
     }
 
     @Override
     public PagedListAdapter getAdapter() {
-        String feedType = getArguments() == null ? "all" : getArguments().getString("feedType");
-        return new FeedAdapter(getContext(), feedType){
+        feedType = getArguments() == null ? "all" : getArguments().getString("feedType");
+        return new FeedAdapter(getContext(), feedType) {
             @Override
-            public void onViewAttachedToWindow(@NonNull FeedViewHolder holder) {
-                super.onViewAttachedToWindow(holder);
+            public void onViewAttachedToWindow2(@NonNull FeedViewHolder holder) {
                 // 判断是否是视频类型的item
-                if (holder.isVideoType()){
+                if (holder.isVideoType()) {
                     playerDetector.addTarget(holder.getPlayView());
                 }
             }
 
             @Override
-            public void onViewDetachedFromWindow(@NonNull FeedViewHolder holder) {
-                super.onViewDetachedFromWindow(holder);
+            public void onViewDetachedFromWindow2(@NonNull FeedViewHolder holder) {
                 playerDetector.removeTarget(holder.getPlayView());
+            }
+
+            @Override
+            public void onCurrentListChanged(@Nullable PagedList<Feed> previousList, @Nullable PagedList<Feed> currentList) {
+                // 此处方法触发是在每提交一次 pageList 对象到 adapter就会回调
+                // 即每调用一次 adapter.submitList()
+                if (previousList != null && currentList != null) {
+                    if (!currentList.containsAll(previousList)) {
+                        mRecyclerView.scrollToPosition(0);
+                    }
+                }
             }
         };
     }
@@ -103,7 +126,7 @@ public class HomeFragment extends AbsListFragment<Feed, HomeViewModel> {
 
     @Override
     public void onDestroy() {
-        PageListPlayerManager.release("");
+        PageListPlayerManager.release(feedType);
         super.onDestroy();
     }
 }
