@@ -113,6 +113,16 @@ public class HomeFragment extends AbsListFragment<Feed, HomeViewModel> {
     }
 
     @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden) {
+            playerDetector.onPause();
+        } else {
+            playerDetector.onResume();
+        }
+    }
+
+    @Override
     public void onPause() {
         playerDetector.onPause();
         super.onPause();
@@ -120,8 +130,16 @@ public class HomeFragment extends AbsListFragment<Feed, HomeViewModel> {
 
     @Override
     public void onResume() {
-        playerDetector.onResume();
         super.onResume();
+        if (getParentFragment() != null) {
+            if (getParentFragment().isVisible() && isVisible()) {
+                playerDetector.onResume();
+            }
+        } else {
+            if (isVisible()) {
+                playerDetector.onResume();
+            }
+        }
     }
 
     @Override
