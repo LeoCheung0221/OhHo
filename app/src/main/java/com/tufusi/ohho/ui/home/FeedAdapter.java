@@ -30,9 +30,9 @@ import com.tufusi.ohho.view.OHPlayerView;
  */
 public class FeedAdapter extends AbsPagedListAdapter<Feed, FeedAdapter.FeedViewHolder> {
 
-    private Context mContext;
     private LayoutInflater mInflater;
-    private String mPageLifeTag;
+    protected Context mContext;
+    protected String mPageLifeTag;
 
     protected FeedAdapter(Context context, String pageLifeTag) {
         super(new DiffUtil.ItemCallback<Feed>() {
@@ -87,8 +87,8 @@ public class FeedAdapter extends AbsPagedListAdapter<Feed, FeedAdapter.FeedViewH
 
     public class FeedViewHolder extends RecyclerView.ViewHolder {
 
-        private final ViewDataBinding mBinding;
-        private OHPlayerView playerView;
+        public ViewDataBinding mBinding;
+        public OHPlayerView playerView;
 
         public FeedViewHolder(@NonNull View itemView, ViewDataBinding binding) {
             super(itemView);
@@ -97,7 +97,7 @@ public class FeedAdapter extends AbsPagedListAdapter<Feed, FeedAdapter.FeedViewH
 
         public void bindData(Feed item) {
             mBinding.setVariable(BR.feed, item);
-            mBinding.setVariable(BR.lifecycleOwner, mContext);
+            mBinding.setVariable(BR.owner, mContext);
 
             if (mBinding instanceof LayoutFeedTypeImageBinding) {
                 LayoutFeedTypeImageBinding imageBinding = (LayoutFeedTypeImageBinding) mBinding;

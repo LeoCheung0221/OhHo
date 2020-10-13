@@ -54,6 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_10"
             android:layout_marginTop="@dimen/dp_2"
+            android:text="@{feed.author.name}"
             android:textSize="@dimen/sp_14"
             android:textStyle="bold"
             app:layout_constraintLeft_toRightOf="@+id/author_avatar"

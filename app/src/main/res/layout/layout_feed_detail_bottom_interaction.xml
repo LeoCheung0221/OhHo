@@ -128,7 +128,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_2"
                     android:background="@drawable/icon_cell_share"
-                    android:backgroundTint="@{feed.ugc.hasFavorite?@color/color_theme:fullscreen?@color/color_white:@color/color_666}"
+                    android:backgroundTint="@{fullscreen?@color/color_white:@color/color_666}"
                     tools:src="@drawable/icon_cell_share" />
 
                 <TextView
