@@ -9,4 +9,12 @@
     <string name="feed_diss">踩</string>
     <string name="feed_comment">评论</string>
     <string name="share">分享</string>
+    <string name="has_follow">已关注</string>
+    <string name="unfollow">关注</string>
+    <string name="has_favorite">已收藏</string>
+    <string name="unfavorite">收藏</string>
+    <string name="string_feed_detail_discuss_hint">写评论的人都很可爱</string>
+    <string name="string_feed_detail_title">帖子详情</string>
+    <string name="string_label_author">作者</string>
+    <string name="string_comment_empty_hint">还没有评论，快来抢一楼吧</string>
 </resources>

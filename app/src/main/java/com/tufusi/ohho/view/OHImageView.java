@@ -18,6 +18,7 @@ import androidx.databinding.BindingAdapter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.tufusi.libcommon.utils.ScreenUtils;
@@ -63,7 +64,7 @@ public class OHImageView extends AppCompatImageView {
     public static void setImageUrl(OHImageView view, String imageUrl, boolean isCircle, int radius) {
         RequestBuilder<Drawable> builder = Glide.with(view).load(imageUrl);
         if (isCircle) {
-            builder.transform(new CenterCrop());
+            builder.transform(new CircleCrop());
         } else if (radius > 0) {
             builder.transform(new RoundedCornersTransformation(ScreenUtils.dip2px(radius), 0));
         }

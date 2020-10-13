@@ -1,6 +1,8 @@
 package com.tufusi.ohho.model;
 
 import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+import androidx.databinding.library.baseAdapters.BR;
 
 import java.io.Serializable;
 
@@ -178,11 +180,13 @@ public class User extends BaseObservable implements Serializable {
         this.feedCount = feedCount;
     }
 
+    @Bindable
     public boolean isHasFollow() {
         return hasFollow;
     }
 
     public void setHasFollow(boolean hasFollow) {
         this.hasFollow = hasFollow;
+        notifyPropertyChanged(BR._all);
     }
 }

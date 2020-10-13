@@ -9,11 +9,18 @@
             name="comment"
             type="com.tufusi.ohho.model.Comment" />
 
+        <variable
+            name="owner"
+            type="androidx.lifecycle.LifecycleOwner" />
+
         <import type="android.text.TextUtils" />
 
         <import type="android.view.View" />
 
         <import type="com.tufusi.ohho.utils.StringConvert" />
+
+        <import type="com.tufusi.ohho.ui.InteractionPresenter" />
+
     </data>
 
     <com.tufusi.libcommon.view.CornerFrameLayout
@@ -89,6 +96,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dp_2"
+                    android:onClick="@{()->InteractionPresenter.toggleCommentLike(owner,comment)}"
                     android:padding="@dimen/dp_2"
                     android:src="@{comment.ugc.hasLiked?@drawable/icon_cell_liked:@drawable/icon_cell_like}"
                     tools:src="@drawable/icon_cell_liked" />

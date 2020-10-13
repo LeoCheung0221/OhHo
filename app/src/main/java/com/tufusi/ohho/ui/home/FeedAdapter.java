@@ -19,6 +19,7 @@ import com.tufusi.ohho.R;
 import com.tufusi.ohho.databinding.LayoutFeedTypeImageBinding;
 import com.tufusi.ohho.databinding.LayoutFeedTypeVideoBinding;
 import com.tufusi.ohho.model.Feed;
+import com.tufusi.ohho.ui.detail.FeedDetailActivity;
 import com.tufusi.ohho.view.OHPlayerView;
 
 /**
@@ -78,7 +79,8 @@ public class FeedAdapter extends AbsPagedListAdapter<Feed, FeedAdapter.FeedViewH
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                // 无缝续播需要
+                FeedDetailActivity.startFeedDetailActivity(mContext, getItem(position), mPageLifeTag);
             }
         });
     }

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="feed"
+            type="com.tufusi.ohho.model.Feed" />
+
+        <variable
+            name="fullscreen"
+            type="Boolean" />
+
+        <variable
+            name="owner"
+            type="androidx.lifecycle.LifecycleOwner" />
+
+        <import type="android.content.Context" />
+
+        <import type="android.view.View" />
+
+        <import type="com.tufusi.ohho.ui.InteractionPresenter" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_48"
+        android:layout_gravity="bottom"
+        android:background="@{fullscreen?@color/transparent:@color/color_white}"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/color_divider"
+            android:visibility="@{fullscreen?View.INVISIBLE:View.VISIBLE}" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/dp_16"
+                android:layout_marginTop="@dimen/dp_4"
+                android:layout_marginEnd="@dimen/dp_16"
+                android:layout_marginBottom="@dimen/dp_4"
+                android:layout_weight="4"
+                android:background="@drawable/bg_edit_view"
+                android:gravity="center_vertical"
+                android:hint="@string/string_feed_detail_discuss_hint"
+                android:paddingStart="@dimen/dp_10"
+                android:textColor="@{fullscreen?@color/color_white:@color/color_333}"
+                android:textColorHint="@{fullscreen?@color/color_white:@color/color_333}"
+                android:textSize="@dimen/sp_12" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:onClick="@{()->InteractionPresenter.toggleFeedLike(owner,feed)}"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_2"
+                    android:background="@{feed.ugc.hasLiked?@drawable/icon_cell_liked:@drawable/icon_cell_like}"
+                    android:backgroundTint="@{feed.ugc.hasLiked?@color/color_theme:fullscreen?@color/color_white:@color/color_666}"
+                    tools:src="@drawable/icon_cell_liked" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_2"
+                    android:gravity="center"
+                    android:text="@{feed.ugc.likeCount>0?String.valueOf(feed.ugc.likeCount):@string/like}"
+                    android:textColor="@{feed.ugc.hasLiked?@color/color_theme:fullscreen?@color/color_white:@color/color_666}"
+                    android:textSize="@dimen/sp_12"
+                    tools:text="赞" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:onClick="@{()->InteractionPresenter.toggleFeedFavorite(owner,feed)}"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_2"
+                    android:background="@{feed.ugc.hasFavorite?@drawable/ic_collected:@drawable/ic_collect}"
+                    android:backgroundTint="@{feed.ugc.hasFavorite?@color/color_theme:fullscreen?@color/color_white:@color/color_666}"
+                    tools:src="@drawable/ic_collected" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_2"
+                    android:gravity="center"
+                    android:text="@{feed.ugc.hasFavorite?@string/has_favorite:@string/unfavorite}"
+                    android:textColor="@{feed.ugc.hasFavorite?@color/color_theme:fullscreen?@color/color_white:@color/color_666}"
+                    android:textSize="@dimen/sp_12"
+                    tools:text="收藏" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:onClick="@{()->InteractionPresenter.openShare((Context)owner,feed)}"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_2"
+                    android:background="@drawable/icon_cell_share"
+                    android:backgroundTint="@{feed.ugc.hasFavorite?@color/color_theme:fullscreen?@color/color_white:@color/color_666}"
+                    tools:src="@drawable/icon_cell_share" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_2"
+                    android:gravity="center"
+                    android:text="@string/share"
+                    android:textColor="@{fullscreen?@color/color_white:@color/color_666}"
+                    android:textSize="@dimen/sp_12"
+                    tools:text="分享" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

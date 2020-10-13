@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="comment"
+            type="com.tufusi.ohho.model.Comment" />
+
+        <variable
+            name="owner"
+            type="androidx.lifecycle.LifecycleOwner" />
+
+        <import type="android.content.Context"/>
+
+        <import type="android.text.TextUtils" />
+
+        <import type="android.view.View" />
+
+        <import type="com.tufusi.ohho.app.UserManager" />
+
+        <import type="com.tufusi.ohho.utils.TimeUtils" />
+
+        <import type="com.tufusi.ohho.ui.InteractionPresenter" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/dp_10">
+
+        <com.tufusi.ohho.view.OHImageView
+            android:id="@+id/author_avatar"
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginStart="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_16"
+            app:image_url="@{comment.author.avatar}"
+            app:isCircle="@{true}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@mipmap/ic_launcher_round" />
+
+        <TextView
+            android:id="@+id/author_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_16"
+            android:text="@{comment.author.name}"
+            android:textColor="@color/color_000"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintLeft_toRightOf="@+id/author_avatar"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="我压你肘了嘛" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/label_author"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_14"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_16"
+            android:paddingStart="@dimen/dp_5"
+            android:paddingTop="@dimen/dp_0"
+            android:paddingEnd="@dimen/dp_5"
+            android:paddingBottom="@dimen/dp_0"
+            android:text="@string/string_label_author"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/sp_10"
+            android:visibility="gone"
+            app:backgroundTint="@color/color_theme"
+            app:cornerRadius="@dimen/dp_4"
+            app:layout_constraintBaseline_toBaselineOf="@+id/author_name"
+            app:layout_constraintLeft_toRightOf="@+id/author_name"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/create_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_16"
+            android:textColor="@color/color_999"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintLeft_toRightOf="@+id/label_author"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="4天前" />
+
+        <TextView
+            android:id="@+id/comment_like"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_16"
+            android:layout_marginEnd="@dimen/dp_16"
+            android:drawableRight="@{comment.ugc.hasLiked?@drawable/icon_cell_liked:@drawable/icon_cell_like}"
+            android:drawablePadding="@dimen/dp_5"
+            android:gravity="center"
+            android:onClick="@{()->InteractionPresenter.toggleCommentLike(owner, comment)}"
+            android:text="@{String.valueOf(comment.ugc.likeCount)}"
+            android:textColor="@{comment.ugc.hasLiked?@color/color_theme:@color/color_999}"
+            android:textSize="@dimen/sp_10"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:drawableRight="@drawable/icon_cell_liked_large"
+            tools:text="1000" />
+
+        <ImageView
+            android:id="@+id/comment_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_16"
+            android:layout_marginEnd="@dimen/dp_16"
+            android:src="@drawable/icon_item_cell_delete"
+            app:layout_constraintRight_toLeftOf="@+id/comment_like"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/comment_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_5"
+            android:paddingEnd="@dimen/dp_60"
+            android:text="@{comment.commentText}"
+            android:textColor="@color/color_333"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintLeft_toRightOf="@+id/author_avatar"
+            app:layout_constraintTop_toBottomOf="@+id/author_name"
+            tools:text="comment_text" />
+
+        <FrameLayout
+            android:id="@+id/comment_ext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_10"
+            app:layout_constraintLeft_toRightOf="@+id/author_avatar"
+            app:layout_constraintTop_toBottomOf="@+id/comment_text">
+
+            <com.tufusi.ohho.view.OHImageView
+                android:id="@+id/comment_cover"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@color/color_gray2"
+                android:scaleType="center"
+                tools:layout_height="@dimen/dp_100"
+                tools:layout_width="@dimen/dp_100" />
+
+            <ImageView
+                android:id="@+id/video_icon"
+                android:layout_width="@dimen/dp_25"
+                android:layout_height="@dimen/dp_25"
+                android:layout_gravity="center"
+                android:src="@drawable/icon_video_play" />
+
+        </FrameLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

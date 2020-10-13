@@ -1,5 +1,10 @@
 package com.tufusi.ohho.model;
 
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+
+import com.tufusi.ohho.BR;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -9,7 +14,7 @@ import java.util.Objects;
  * @author 鼠夏目
  * @description
  */
-public class Comment implements Serializable {
+public class Comment extends BaseObservable implements Serializable {
 
     /**
      * id : 1126
@@ -151,12 +156,14 @@ public class Comment implements Serializable {
         this.height = height;
     }
 
+    @Bindable
     public boolean isHasLiked() {
         return hasLiked;
     }
 
     public void setHasLiked(boolean hasLiked) {
         this.hasLiked = hasLiked;
+        notifyPropertyChanged(BR._all);
     }
 
     public User getAuthor() {

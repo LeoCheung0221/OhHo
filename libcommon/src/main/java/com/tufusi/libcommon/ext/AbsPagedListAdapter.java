@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public abstract class AbsPagedListAdapter<T, VH extends RecyclerView.ViewHolder> extends PagedListAdapter<T, VH> {
 
     private int BASE_ITEM_TYPE_HEADER = 100000;
-    private int BASE_ITEM_TYPE_FOOTER = 100000;
+    private int BASE_ITEM_TYPE_FOOTER = 200000;
 
     private SparseArray<View> mHeaders = new SparseArray<>();
     private SparseArray<View> mFooters = new SparseArray<>();
@@ -72,6 +72,9 @@ public abstract class AbsPagedListAdapter<T, VH extends RecyclerView.ViewHolder>
         return mFooters.size();
     }
 
+    /**
+     * 获取原始列表 正常类型 ITEM 的 count
+     */
     public int getOriginalItemCount() {
         return getItemCount() - mHeaders.size() - mFooters.size();
     }
@@ -102,6 +105,9 @@ public abstract class AbsPagedListAdapter<T, VH extends RecyclerView.ViewHolder>
         return 0;
     }
 
+    /**
+     * 判断是否是foot 类型
+     */
     private boolean isFooterPosition(int position) {
         return position >= getOriginalItemCount() + mHeaders.size();
     }
