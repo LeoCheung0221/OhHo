@@ -1,11 +1,14 @@
 package com.tufusi.ohho.ui.detail;
 
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.CallSuper;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.paging.ItemKeyedDataSource;
 import androidx.paging.PagedList;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +19,9 @@ import com.tufusi.ohho.R;
 import com.tufusi.ohho.databinding.LayoutFeedDetailBottomInteractionBinding;
 import com.tufusi.ohho.model.Comment;
 import com.tufusi.ohho.model.Feed;
+import com.tufusi.ohho.ui.MutableItemKeyedDataSource;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Created by 鼠夏目 on 2020/10/13.
@@ -33,6 +39,7 @@ public abstract class ViewHandler {
     protected FeedCommentAdapter adapter;
 
     private EmptyView mEmptyView;
+    private CommentDialog commentDialog;
 
     public ViewHandler(FragmentActivity activity) {
         mActivity = activity;
@@ -58,6 +65,27 @@ public abstract class ViewHandler {
                 handlerEmpty(comments.size() > 0);
             }
         });
+
+        mInteractionBinding.inputView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCommentDialog();
+            }
+        });
+    }
+
+    protected void showCommentDialog(){
+        if (commentDialog == null) {
+            commentDialog = CommentDialog.newInstance(mFeed.getItemId());
+        }
+        commentDialog.setOnCommentAddListener(new CommentDialog.onCommentAddListener() {
+            @Override
+            public void onCommentAdd(Comment comment) {
+                handlerEmpty(true);
+                adapter.addAndRefreshList(comment);
+            }
+        });
+        commentDialog.show(mActivity.getSupportFragmentManager(), "comment_dialog");
     }
 
     protected void handlerEmpty(boolean hasData) {

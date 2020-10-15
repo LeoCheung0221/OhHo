@@ -33,23 +33,24 @@ public class Feed extends BaseObservable implements Serializable {
      * cover : https://pipijoke.oss-cn-hangzhou.aliyuncs.com/2020%E5%B0%81%E9%9D%A2%E5%9B%BE.png
      */
 
-    private long id;
-    private long itemId;
-    private int itemType;
-    private long createTime;
-    private int duration;
-    private String feeds_text;
-    private String authorId;
-    private String activityIcon;
-    private String activityText;
-    private int width;
-    private int height;
-    private String url;
-    private String cover;
-    private User author;
-    private Ugc ugc;
-    private Comment topComment;
+    public long id;
+    public long itemId;
+    public int itemType;
+    public long createTime;
+    public int duration;
+    public String feeds_text;
+    public String authorId;
+    public String activityIcon;
+    public String activityText;
+    public int width;
+    public int height;
+    public String url;
+    public String cover;
+    public User author;
+    public Ugc ugc;
+    public Comment topComment;
 
+    @Bindable
     public User getAuthor() {
         return author;
     }

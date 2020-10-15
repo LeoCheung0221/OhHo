@@ -15,7 +15,7 @@ import com.tufusi.ohho.exoplayer.PageListPlayerDetector;
 import com.tufusi.ohho.exoplayer.PageListPlayerManager;
 import com.tufusi.ohho.model.Feed;
 import com.tufusi.ohho.ui.AbsListFragment;
-import com.tufusi.ohho.ui.MutableDataSource;
+import com.tufusi.ohho.ui.MutablePageKeyedDataSource;
 
 import java.util.List;
 
@@ -95,7 +95,7 @@ public class HomeFragment extends AbsListFragment<Feed, HomeViewModel> {
             public void onResult(@NonNull List<Feed> data) {
                 PagedList.Config config = mAdapter.getCurrentList().getConfig();
                 if (data.size() > 0) {
-                    MutableDataSource dataSource = new MutableDataSource();
+                    MutablePageKeyedDataSource dataSource = new MutablePageKeyedDataSource();
                     dataSource.data.addAll(currentList);
                     dataSource.data.addAll(data);
 

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:animateLayoutChanges="false"
+        android:background="@color/color_white"
+        android:orientation="vertical">
+
+        <!-- 拍摄缩略图展示区 -->
+        <FrameLayout
+            android:id="@+id/comment_ext_layout"
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="@dimen/dp_60"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginBottom="@dimen/dp_5"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <com.tufusi.ohho.view.OHImageView
+                android:id="@+id/comment_cover"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:layout_gravity="center"
+                android:src="@drawable/icon_video_play"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/comment_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|top"
+                android:paddingStart="@dimen/dp_3"
+                android:tint="@color/color_white"
+                app:srcCompat="@drawable/icon_close"
+                tools:ignore="RtlSymmetry" />
+
+        </FrameLayout>
+        <!-- 拍摄缩略图展示区 -->
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/color_gray2" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_45"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/dp_10"
+            android:paddingEnd="@dimen/dp_10">
+
+            <com.tufusi.ohho.view.OHEditTextView
+                android:id="@+id/input_view"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp_35"
+                android:layout_weight="1"
+                android:background="@drawable/bg_edit_view"
+                android:gravity="center_vertical"
+                android:hint="@string/string_feed_detail_discuss_hint"
+                android:paddingStart="@dimen/dp_10"
+                android:textColor="@color/color_333"
+                android:textColorHint="@color/color_999"
+                android:textSize="@dimen/sp_12"
+                tools:ignore="RtlSymmetry" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/comment_video"
+                android:layout_width="@dimen/dp_36"
+                android:layout_height="@dimen/dp_36"
+                android:layout_marginStart="@dimen/dp_5"
+                android:src="@drawable/icon_publish_video" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/comment_send"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_10"
+                android:gravity="center"
+                android:paddingStart="@dimen/dp_11"
+                android:paddingTop="@dimen/dp_3"
+                android:paddingEnd="@dimen/dp_11"
+                android:paddingBottom="@dimen/dp_3"
+                android:text="@string/string_comment_send"
+                android:textColorHint="@color/color_white"
+                app:backgroundTint="@color/color_theme"
+                app:cornerRadius="@dimen/dp_6" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

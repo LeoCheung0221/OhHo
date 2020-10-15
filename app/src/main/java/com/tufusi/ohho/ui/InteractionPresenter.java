@@ -1,7 +1,9 @@
 package com.tufusi.ohho.ui;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
@@ -9,10 +11,12 @@ import android.widget.Toast;
 import androidx.arch.core.executor.ArchTaskExecutor;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
 import com.alibaba.fastjson.JSONObject;
 import com.tufusi.libcommon.AppGlobal;
+import com.tufusi.libcommon.ext.LiveDataBus;
 import com.tufusi.libnetwork.ApiService;
 import com.tufusi.libnetwork.OhResponse;
 import com.tufusi.libnetwork.ResultCallback;
@@ -21,6 +25,7 @@ import com.tufusi.ohho.model.Comment;
 import com.tufusi.ohho.model.Feed;
 import com.tufusi.ohho.model.User;
 import com.tufusi.ohho.ui.share.ShareDialog;
+import com.tufusi.ohho.utils.TT;
 
 
 /**
@@ -30,6 +35,8 @@ import com.tufusi.ohho.ui.share.ShareDialog;
  * @description
  */
 public class InteractionPresenter {
+
+    public static final String DATA_FROM_INTERACTION = "data_from_interaction";
 
     private static final String URL_TOGGLE_FEED_LIKE = "/ugc/toggleFeedLike";
 
@@ -110,32 +117,71 @@ public class InteractionPresenter {
     /**
      * 关注/取消关注
      */
-    public static void toggleFollowUser(LifecycleOwner owner, User user) {
+    public static void toggleFollowUser(LifecycleOwner owner, Feed feed) {
         if (!isLogin(owner, new Observer<User>() {
             @Override
             public void onChanged(User user) {
-                toggleFollowUserInternal(user);
+                toggleFollowUserInternal(feed);
             }
         })) {
         } else {
-            toggleFollowUserInternal(user);
+            toggleFollowUserInternal(feed);
         }
     }
 
     /**
      * 删除帖子
      */
-//    public static void deleteComment(LifecycleOwner owner, ){
-//    }
+    public static LiveData<Boolean> deleteFeedComment(Context context, long itemId, long commentId) {
+        MutableLiveData<Boolean> liveData = new MutableLiveData<>();
+        new AlertDialog.Builder(context)
+                .setNegativeButton("删除", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        deleteFeedComment(liveData, itemId, commentId);
+                    }
+                })
+                .setPositiveButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setMessage("确定要删除这条评论吗？")
+                .create().show();
+        return liveData;
+    }
 
-    private static void toggleCommentLikeInternal(Comment comment){
+    private static void deleteFeedComment(LiveData liveData, long itemId, long commentId) {
+        ApiService.get(URL_COMMENT_DELETE)
+                .addParam("commentId", commentId)
+                .addParam("userId", UserManager.get().getUserId())
+                .addParam("itemId", itemId)
+                .execute(new ResultCallback<JSONObject>() {
+                    @Override
+                    public void onSuccess(OhResponse<JSONObject> response) {
+                        if (response.body != null) {
+                            boolean result = response.body.getBooleanValue("result");
+                            ((MutableLiveData)liveData).postValue(result);
+                        }
+                    }
+
+                    @Override
+                    public void onError(OhResponse<JSONObject> respone) {
+                        TT.showToast(respone.message);
+                    }
+                });
+    }
+
+    private static void toggleCommentLikeInternal(Comment comment) {
         ApiService.get(URL_TOGGLE_COMMENT_LIKE)
                 .addParam("commentId", comment.getId())
                 .addParam("userId", UserManager.get().getUserId())
                 .execute(new ResultCallback<JSONObject>() {
                     @Override
                     public void onSuccess(OhResponse<JSONObject> response) {
-                        if (response.body!=null){
+                        if (response.body != null) {
                             boolean hasLiked = response.body.getBooleanValue("hasLiked");
                             comment.setHasLiked(hasLiked);
                         }
@@ -148,16 +194,18 @@ public class InteractionPresenter {
                 });
     }
 
-    private static void toggleFollowUserInternal(User user) {
+    private static void toggleFollowUserInternal(Feed feed) {
         ApiService.get(URL_TOGGLE_FEED_FOLLOW_USER)
                 .addParam("followUserId", UserManager.get().getUserId())
-                .addParam("userId", user.getUserId())
+                .addParam("userId", feed.getAuthor().getUserId())
                 .execute(new ResultCallback<JSONObject>() {
                     @Override
                     public void onSuccess(OhResponse<JSONObject> response) {
                         if (response.body != null) {
                             boolean hasFollow = response.body.getBooleanValue("hasLiked");
-                            user.setHasFollow(hasFollow);
+                            feed.getAuthor().setHasFollow(hasFollow);
+                            LiveDataBus.get().with(DATA_FROM_INTERACTION)
+                                    .postValue(feed);
                         }
                     }
 
@@ -178,6 +226,8 @@ public class InteractionPresenter {
                         if (response.body != null) {
                             boolean hasFavorite = response.body.getBooleanValue("hasFavorite");
                             feed.getUgc().setHasFavorite(hasFavorite);
+                            LiveDataBus.get().with(DATA_FROM_INTERACTION)
+                                    .postValue(feed);
                         }
                     }
 
@@ -198,6 +248,8 @@ public class InteractionPresenter {
                         if (response.body != null) {
                             boolean hasLiked = response.body.getBoolean("hasLiked").booleanValue();
                             feed.getUgc().setHasdiss(hasLiked);
+                            LiveDataBus.get().with(DATA_FROM_INTERACTION)
+                                    .postValue(feed);
                         }
                     }
 
@@ -218,6 +270,8 @@ public class InteractionPresenter {
                         if (response.body != null) {
                             boolean hasLiked = response.body.getBoolean("hasLiked").booleanValue();
                             feed.getUgc().setHasLiked(hasLiked);
+                            LiveDataBus.get().with(DATA_FROM_INTERACTION)
+                                    .postValue(feed);
                         }
                     }
 

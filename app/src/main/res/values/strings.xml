@@ -17,4 +17,5 @@
     <string name="string_feed_detail_title">帖子详情</string>
     <string name="string_label_author">作者</string>
     <string name="string_comment_empty_hint">还没有评论，快来抢一楼吧</string>
+    <string name="string_comment_send">发送</string>
 </resources>

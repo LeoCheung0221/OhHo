@@ -44,6 +44,7 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/input_view"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/dp_16"

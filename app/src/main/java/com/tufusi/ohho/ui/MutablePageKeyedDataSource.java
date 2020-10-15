@@ -17,7 +17,7 @@ import java.util.List;
  * @author 鼠夏目
  * @description 自定义继承 PageKeyedDataSource 的数据源对象 提供缓存使用
  */
-public class MutableDataSource<Key, Value> extends PageKeyedDataSource<Key, Value> {
+public class MutablePageKeyedDataSource<Key, Value> extends PageKeyedDataSource<Key, Value> {
 
     public List<Value> data = new ArrayList<>();
 

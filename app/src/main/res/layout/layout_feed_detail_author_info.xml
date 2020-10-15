@@ -80,7 +80,7 @@
             android:layout_marginEnd="@dimen/dp_16"
             android:backgroundTint="@{fullscreen?@color/transparent:@color/color_theme}"
             android:gravity="center"
-            android:onClick="@{()->InteractionPresenter.toggleFollowUser(owner,feed.author)}"
+            android:onClick="@{()->InteractionPresenter.toggleFollowUser(owner,feed)}"
             android:paddingStart="@dimen/dp_16"
             android:paddingTop="@dimen/dp_5"
             android:paddingEnd="@dimen/dp_16"

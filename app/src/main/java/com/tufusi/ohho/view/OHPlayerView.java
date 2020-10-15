@@ -36,13 +36,15 @@ import static android.view.Gravity.BOTTOM;
  */
 public class OHPlayerView extends FrameLayout implements IPlayerTarget, PlayerControlView.VisibilityListener, Player.EventListener {
 
-    private View bufferView;
-    private OHImageView cover, blur;
-    private ImageView playBtn;
+    public View bufferView;
+    public OHImageView cover, blur;
+    protected ImageView playBtn;
 
     protected String mVideoUrl;
     protected String mPageLifeTag;
-    private boolean isPlaying;
+    protected boolean isPlaying;
+    protected int mWidthPx;
+    protected int mHeightPx;
 
     public OHPlayerView(@NonNull Context context) {
         this(context, null);
@@ -97,6 +99,8 @@ public class OHPlayerView extends FrameLayout implements IPlayerTarget, PlayerCo
      * @param pageLifeTag 页面的声明标识
      */
     public void bindData(String videoUrl, String coverUrl, int widthPx, int heightPx, String pageLifeTag) {
+        mWidthPx = widthPx;
+        mHeightPx = heightPx;
         mVideoUrl = videoUrl;
         mPageLifeTag = pageLifeTag;
         // 设置封面
@@ -117,7 +121,7 @@ public class OHPlayerView extends FrameLayout implements IPlayerTarget, PlayerCo
     /**
      * 设置控件的宽高
      */
-    private void setSize(int widthPx, int heightPx) {
+    protected void setSize(int widthPx, int heightPx) {
         int maxWidth = ScreenUtils.getScreenWidth();
         int maxHeight = maxWidth;
 

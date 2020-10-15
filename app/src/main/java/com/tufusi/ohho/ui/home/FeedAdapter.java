@@ -9,16 +9,19 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tufusi.libcommon.ext.AbsPagedListAdapter;
+import com.tufusi.libcommon.ext.LiveDataBus;
 import com.tufusi.ohho.BR;
 import com.tufusi.ohho.R;
 import com.tufusi.ohho.databinding.LayoutFeedTypeImageBinding;
 import com.tufusi.ohho.databinding.LayoutFeedTypeVideoBinding;
 import com.tufusi.ohho.model.Feed;
+import com.tufusi.ohho.ui.InteractionPresenter;
 import com.tufusi.ohho.ui.detail.FeedDetailActivity;
 import com.tufusi.ohho.view.OHPlayerView;
 
@@ -33,6 +36,8 @@ public class FeedAdapter extends AbsPagedListAdapter<Feed, FeedAdapter.FeedViewH
     private LayoutInflater mInflater;
     protected Context mContext;
     protected String mPageLifeTag;
+
+    private FeedObserver mFeedObserver;
 
     protected FeedAdapter(Context context, String pageLifeTag) {
         super(new DiffUtil.ItemCallback<Feed>() {
@@ -81,8 +86,35 @@ public class FeedAdapter extends AbsPagedListAdapter<Feed, FeedAdapter.FeedViewH
             public void onClick(View v) {
                 // 无缝续播需要
                 FeedDetailActivity.startFeedDetailActivity(mContext, getItem(position), mPageLifeTag);
+                if (mFeedObserver == null) {
+                    mFeedObserver = new FeedObserver();
+                    LiveDataBus.get().with(InteractionPresenter.DATA_FROM_INTERACTION)
+                            .observe((LifecycleOwner) mContext, mFeedObserver);
+                }
+
+                mFeedObserver.setFeed(feed);
             }
         });
+    }
+
+    private static class FeedObserver implements Observer<Feed> {
+
+        private Feed mFeed;
+
+        @Override
+        public void onChanged(Feed newOne) {
+            if (mFeed.getId() != newOne.getId()) {
+                return;
+            }
+
+            mFeed.author = newOne.author;
+            mFeed.ugc = newOne.ugc;
+            mFeed.notifyChange();
+        }
+
+        public void setFeed(Feed feed) {
+            mFeed = feed;
+        }
     }
 
     public class FeedViewHolder extends RecyclerView.ViewHolder {

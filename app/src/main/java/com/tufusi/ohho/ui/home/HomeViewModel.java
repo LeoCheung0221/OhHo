@@ -19,7 +19,7 @@ import com.tufusi.libnetwork.ResultCallback;
 import com.tufusi.ohho.app.UserManager;
 import com.tufusi.ohho.model.Feed;
 import com.tufusi.ohho.ui.AbsViewModel;
-import com.tufusi.ohho.ui.MutableDataSource;
+import com.tufusi.ohho.ui.MutablePageKeyedDataSource;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -102,7 +102,7 @@ public class HomeViewModel extends AbsViewModel<Feed> {
                 public void onCacheSuccess(OhResponse<List<Feed>> response) {
                     Log.e("loadData：", "onCacheSuccess: " + (response.body != null ? response.body.size() : 0));
                     // 创建 pageList 对象需要绑定一个 DataSource 将缓存数据和 DataSource关联起来
-                    MutableDataSource dataSource = new MutableDataSource<Integer, Feed>();
+                    MutablePageKeyedDataSource dataSource = new MutablePageKeyedDataSource<Integer, Feed>();
                     dataSource.data.addAll(response.body);
 
                     // 关联 pageList 和 DataSource
