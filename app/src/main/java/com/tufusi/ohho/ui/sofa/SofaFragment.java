@@ -12,15 +12,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.tufusi.libnavannotation.FragmentDestination;
-import com.tufusi.ohho.R;
 import com.tufusi.ohho.app.AppRouteConfig;
 import com.tufusi.ohho.databinding.FragmentSofaBinding;
 import com.tufusi.ohho.model.SofaTab;
@@ -28,7 +25,6 @@ import com.tufusi.ohho.ui.home.HomeFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 @FragmentDestination(pageUrl = "main/tabs/sofa", asStarter = false, needLogin = false)
 public class SofaFragment extends Fragment {

@@ -21,6 +21,7 @@
             app:tabIndicatorColor="@color/color_theme"
             app:tabIndicatorFullWidth="false"
             app:tabIndicatorHeight="@dimen/dp_2"
+            app:tabInlineLabel="true"
             app:tabMode="scrollable"
             app:tabSelectedTextColor="@color/color_theme"
             app:tabTextColor="@color/color_333"

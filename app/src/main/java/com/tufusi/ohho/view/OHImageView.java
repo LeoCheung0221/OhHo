@@ -77,7 +77,7 @@ public class OHImageView extends AppCompatImageView {
     }
 
     public void bindData(String imageUrl, int widthPx, int heightPx, int marginLeft) {
-        bindData(imageUrl, widthPx, heightPx, marginLeft, ScreenUtils.getScreenWidth(), ScreenUtils.getScreenHeight());
+        bindData(imageUrl, widthPx, heightPx, marginLeft, ScreenUtils.getScreenWidth(), ScreenUtils.getScreenWidth());
     }
 
     /**
@@ -94,14 +94,13 @@ public class OHImageView extends AppCompatImageView {
             Glide.with(this).load(imageUrl).into(new SimpleTarget<Drawable>() {
                 @Override
                 public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                    int height = resource.getIntrinsicHeight();
                     int width = resource.getIntrinsicWidth();
+                    int height = resource.getIntrinsicHeight();
                     setSize(width, height, marginLeft, maxWidth, maxHeight);
 
                     setImageDrawable(resource);
                 }
             });
-
             return;
         }
 
@@ -115,12 +114,12 @@ public class OHImageView extends AppCompatImageView {
     private void setSize(int width, int height, int marginLeft, int maxWidth, int maxHeight) {
         int finalWidth, finalHeight;
         // 如果宽大于高，则宽度全填满，高度等比例自适应
-        if (width >= height) {
+        if (width > height) {
             finalWidth = maxWidth;
-            finalHeight = (int) (height * finalWidth / width * 1.0f);
+            finalHeight = (int) (height / (width * 1.0f / finalWidth));
         } else {
             finalHeight = maxHeight;
-            finalWidth = (int) (width * finalHeight / height * 1.0f);
+            finalWidth = (int) (width / (height * 1.0f / finalHeight));
         }
 
         ViewGroup.LayoutParams params = getLayoutParams();
@@ -144,7 +143,7 @@ public class OHImageView extends AppCompatImageView {
      * @param radius   半径
      */
     public void setBlurImageUrl(String coverUrl, int radius) {
-        Glide.with(this).load(coverUrl).override(50)
+        Glide.with(this).load(coverUrl).override(radius)
                 .transform(new BlurTransformation())
                 .dontAnimate()
                 .into(new SimpleTarget<Drawable>() {

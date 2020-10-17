@@ -23,6 +23,7 @@ import com.tufusi.ohho.databinding.LayoutFeedTypeVideoBinding;
 import com.tufusi.ohho.model.Feed;
 import com.tufusi.ohho.ui.InteractionPresenter;
 import com.tufusi.ohho.ui.detail.FeedDetailActivity;
+import com.tufusi.ohho.view.OHImageView;
 import com.tufusi.ohho.view.OHPlayerView;
 
 /**
@@ -121,6 +122,7 @@ public class FeedAdapter extends AbsPagedListAdapter<Feed, FeedAdapter.FeedViewH
 
         public ViewDataBinding mBinding;
         public OHPlayerView playerView;
+        public OHImageView feedImage;
 
         public FeedViewHolder(@NonNull View itemView, ViewDataBinding binding) {
             super(itemView);
@@ -133,6 +135,7 @@ public class FeedAdapter extends AbsPagedListAdapter<Feed, FeedAdapter.FeedViewH
 
             if (mBinding instanceof LayoutFeedTypeImageBinding) {
                 LayoutFeedTypeImageBinding imageBinding = (LayoutFeedTypeImageBinding) mBinding;
+                feedImage = imageBinding.feedImage;
                 imageBinding.feedImage.bindData(item.getCover(), item.getWidth(), item.getHeight(), 16);
             } else {
                 LayoutFeedTypeVideoBinding videoBinding = (LayoutFeedTypeVideoBinding) mBinding;

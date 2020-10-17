@@ -93,7 +93,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:strokeColor="@color/color_white"
+            app:strokeColor="@{fullscreen?@color/color_white:@color/transparent}"
             app:strokeWidth="@dimen/dp_2"
             tools:text="关注" />
 
