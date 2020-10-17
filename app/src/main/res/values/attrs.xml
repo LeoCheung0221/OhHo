@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RecordView">
+        <!--    录制时进度条颜色    -->
+        <attr name="progress_color" format="color"></attr>
+        <!--    录制时进度条宽度    -->
+        <attr name="progress_width" format="dimension"></attr>
+        <!--    RecordView背景色    -->
+        <attr name="fill_color" format="color"></attr>
+        <!--    未按按钮时半径大小   -->
+        <attr name="radius" format="dimension"></attr>
+        <!--    录制最大时长   -->
+        <attr name="duration" format="integer"></attr>
+    </declare-styleable>
+</resources>

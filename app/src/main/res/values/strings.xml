@@ -18,4 +18,9 @@
     <string name="string_label_author">作者</string>
     <string name="string_comment_empty_hint">还没有评论，快来抢一楼吧</string>
     <string name="string_comment_send">发送</string>
+    <string name="string_capture_tips">轻触拍照，长按摄像</string>
+    <string name="string_permission_denied_tips">必须的权限尚未得到授权，功能暂无法使用\n请重新授权！</string>
+    <string name="string_capture_permission_no">不</string>
+    <string name="string_capture_permission_ok">好</string>
+    <string name="preview_ok">完成</string>
 </resources>
