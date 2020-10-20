@@ -1,7 +1,6 @@
 package com.tufusi.ohho.app;
 
 import android.content.res.AssetManager;
-import android.icu.text.SymbolTable;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
@@ -77,7 +76,7 @@ public class AppRouteConfig {
      * @param fileName 文件路径
      */
     private static String parseFile(String fileName) {
-        AssetManager assetManager = AppGlobal.getsApplication().getAssets();
+        AssetManager assetManager = AppGlobal.getApplication().getAssets();
         InputStream inputStream = null;
         BufferedReader reader = null;
         StringBuilder builder = new StringBuilder();

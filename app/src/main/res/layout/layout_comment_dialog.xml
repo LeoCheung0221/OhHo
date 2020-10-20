@@ -33,6 +33,7 @@
                 android:scaleType="centerCrop" />
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/comment_icon_video"
                 android:layout_width="@dimen/dp_20"
                 android:layout_height="@dimen/dp_20"
                 android:layout_gravity="center"

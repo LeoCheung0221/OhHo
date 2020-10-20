@@ -16,9 +16,11 @@ import androidx.camera.core.VideoCaptureConfig;
 import androidx.core.app.ActivityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
+import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -26,6 +28,7 @@ import android.media.MediaScannerConnection;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Rational;
 import android.util.Size;
 import android.view.Surface;
@@ -48,8 +51,14 @@ import java.util.Map;
 
 public class CaptureActivity extends AppCompatActivity {
 
-    private static final String[] PERMISSION = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    private static final String[] PERMISSION = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO};
     private static final int PERMISSION_REQUEST_CODE = 1000;
+    public static final int REQUEST_CAPTURE_CODE = 10001;
+
+    public static final String RESULT_FILE_PATH = "file_path";
+    public static final String RESULT_FILE_WIDTH = "file_width";
+    public static final String RESULT_FILE_HEIGHT = "file_height";
+    public static final String RESULT_FILE_TYPE = "file_type";
 
     private ActivityCaptureBinding mBinding;
     private ArrayList<String> deniedPermission = new ArrayList<>();
@@ -69,6 +78,11 @@ public class CaptureActivity extends AppCompatActivity {
     private boolean takingPicture;
     private String outputFilePath;
 
+    public static void startActivityForResult(Activity activity) {
+        Intent intent = new Intent(activity, CaptureActivity.class);
+        activity.startActivityForResult(intent, REQUEST_CAPTURE_CODE);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +94,7 @@ public class CaptureActivity extends AppCompatActivity {
             public void onClick() {
                 takingPicture = true;
                 // 指定文件存储位置 & 拍照完成之后回调
-                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), System.currentTimeMillis() + ".jpeg");
+                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), System.currentTimeMillis() + ".jpeg");
                 mBinding.captureTips.setVisibility(View.INVISIBLE);
                 imageCapture.takePicture(file, new ImageCapture.OnImageSavedListener() {
                     @Override
@@ -99,7 +113,7 @@ public class CaptureActivity extends AppCompatActivity {
             @Override
             public void onLongClick() {
                 takingPicture = false;
-                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), System.currentTimeMillis() + ".mp4");
+                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), System.currentTimeMillis() + ".mp4");
                 videoCapture.startRecording(file, new VideoCapture.OnVideoSavedListener() {
                     @Override
                     public void onVideoSaved(File file) {
@@ -172,10 +186,21 @@ public class CaptureActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PreviewActivity.REQUEST_PREVIEW_CODE && resultCode == RESULT_OK) {
+            Intent intent = new Intent();
+            intent.putExtra(RESULT_FILE_PATH, outputFilePath);
+            //当设备处于竖屏情况时，宽高的值 需要互换，横屏不需要
+            intent.putExtra(RESULT_FILE_WIDTH, resolution.getHeight());
+            intent.putExtra(RESULT_FILE_HEIGHT, resolution.getWidth());
+            intent.putExtra(RESULT_FILE_TYPE, !takingPicture);
+            setResult(RESULT_OK, intent);
+            finish();
+        }
     }
 
     @SuppressLint("RestrictedApi")
     private void bindCameraX() {
+        Log.e("bindCameraX: ", "返回值");
         // 解绑所有的与CameraX相关联的usecase
         CameraX.unbindAll();
 

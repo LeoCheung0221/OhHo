@@ -49,11 +49,15 @@
 
         <activity
             android:name=".ui.publish.CaptureActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/capture">
 
         </activity>
 
-        <activity android:name=".ui.publish.PreviewActivity">
+        <activity
+            android:name=".ui.publish.PreviewActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/preview">
 
         </activity>
 

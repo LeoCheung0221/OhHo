@@ -42,7 +42,7 @@ public class PageListPlayerManager {
     private static final ProgressiveMediaSource.Factory mediaSourceFactory;
 
     static {
-        Application application = AppGlobal.getsApplication();
+        Application application = AppGlobal.getApplication();
         // 创建http视频资源如何加载的工厂对象：视频 url 下载视频
         DefaultHttpDataSourceFactory dataSourceFactory = new DefaultHttpDataSourceFactory(Util.getUserAgent(application, application.getPackageName()));
         // 创建缓存，指定缓存位置，和缓存策略 - 最近最少使用策略，最大缓存为200Mb

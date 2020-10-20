@@ -1,5 +1,6 @@
 package com.tufusi.ohho.ui.detail;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -16,6 +17,7 @@ public class FeedDetailActivity extends AppCompatActivity {
     private static final String KEY_LIFE_TAG = "key_life_tag";
 
     private Feed feed;
+    private ViewHandler viewHandler = null;
 
     public static void startFeedDetailActivity(Context context, Feed item, String lifeTag) {
         Intent intent = new Intent(context, FeedDetailActivity.class);
@@ -34,7 +36,6 @@ public class FeedDetailActivity extends AppCompatActivity {
             return;
         }
 
-        ViewHandler viewHandler = null;
         if (feed.getItemType() == Feed.IMAGE_TYPE) {
             viewHandler = new ImageViewHandler(this);
         } else {
@@ -42,5 +43,13 @@ public class FeedDetailActivity extends AppCompatActivity {
         }
 
         viewHandler.bindInitData(feed);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (viewHandler != null) {
+            viewHandler.onActivityResult(requestCode, resultCode, data);
+        }
     }
 }

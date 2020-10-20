@@ -23,4 +23,6 @@
     <string name="string_capture_permission_no">不</string>
     <string name="string_capture_permission_ok">好</string>
     <string name="preview_ok">完成</string>
+    <string name="upload_text">正在发布</string>
+    <string name="file_upload_failed">文件上传失败，请重新发布</string>
 </resources>

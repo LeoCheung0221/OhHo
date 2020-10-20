@@ -17,7 +17,7 @@ public class AppGlobal {
     private static Application sApplication;
 
     @SuppressLint({"DiscouragedPrivateApi", "PrivateApi"})
-    public static Application getsApplication() {
+    public static Application getApplication() {
         if (sApplication == null){
             // 通过 ActivityThread 反射创建
             try {

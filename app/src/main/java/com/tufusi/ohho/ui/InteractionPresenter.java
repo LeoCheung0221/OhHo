@@ -322,7 +322,7 @@ public class InteractionPresenter {
         ArchTaskExecutor.getMainThreadExecutor().execute(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(AppGlobal.getsApplication(), message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(AppGlobal.getApplication(), message, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -331,7 +331,7 @@ public class InteractionPresenter {
         if (UserManager.get().isLogin()) {
             return true;
         } else {
-            LiveData<User> liveData = UserManager.get().login(AppGlobal.getsApplication());
+            LiveData<User> liveData = UserManager.get().login(AppGlobal.getApplication());
             if (owner == null) {
                 liveData.observeForever(loginObserver(observer, liveData));
             } else {

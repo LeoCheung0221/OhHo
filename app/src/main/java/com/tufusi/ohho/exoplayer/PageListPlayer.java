@@ -27,7 +27,7 @@ public class PageListPlayer {
     public String mPlayUrl;
 
     public PageListPlayer() {
-        Application application = AppGlobal.getsApplication();
+        Application application = AppGlobal.getApplication();
         // 创建 exoplayer 播放器实例
         mExoPlayer = ExoPlayerFactory.newSimpleInstance(application,
                 // 视频每一帧的画面渲染器的实现类（默认）

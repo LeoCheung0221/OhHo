@@ -1,5 +1,6 @@
 package com.tufusi.ohho.ui.detail;
 
+import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import com.tufusi.ohho.model.Comment;
 import com.tufusi.ohho.model.Feed;
 import com.tufusi.ohho.ui.InteractionPresenter;
 import com.tufusi.ohho.ui.MutableItemKeyedDataSource;
+import com.tufusi.ohho.ui.publish.PreviewActivity;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -65,34 +67,51 @@ public class FeedCommentAdapter extends AbsPagedListAdapter<Comment, FeedComment
         holder.mBinding.commentDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InteractionPresenter.deleteFeedComment(mContext, item.getItemId(), item.getCommentId())
-                        .observe((LifecycleOwner) mContext, new Observer<Boolean>() {
-                            @Override
-                            public void onChanged(Boolean success) {
-                                if (success) {
-                                    MutableItemKeyedDataSource<Long, Comment> dataSource =
-                                            new MutableItemKeyedDataSource<Long, Comment>((ItemKeyedDataSource) getCurrentList().getDataSource()) {
-                                                @NotNull
-                                                @Override
-                                                public Long getKey(@NonNull Comment item) {
-                                                    return item.getId();
-                                                }
-                                            };
-
-                                    PagedList<Comment> currentList = getCurrentList();
-                                    for (Comment comment : currentList) {
-                                        if (comment != item) {
-                                            dataSource.data.add(comment);
-                                        }
-                                    }
-
-                                    PagedList<Comment> newPageList = dataSource.createNewPageList(getCurrentList().getConfig());
-                                    submitList(newPageList);
-                                }
-                            }
-                        });
+                if (item == null) {
+                    return;
+                }
+                deleteComment(item);
             }
         });
+        holder.mBinding.commentCover.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (item == null) {
+                    return;
+                }
+                boolean isVideo = item.getCommentType() == Comment.COMMENT_TYPE_VIDEO;
+                PreviewActivity.startActivityForResult((Activity) mContext, isVideo ? item.getVideoUrl() : item.getImageUrl(), isVideo, null);
+            }
+        });
+    }
+
+    private void deleteComment(Comment item) {
+        InteractionPresenter.deleteFeedComment(mContext, item.getItemId(), item.getCommentId())
+                .observe((LifecycleOwner) mContext, new Observer<Boolean>() {
+                    @Override
+                    public void onChanged(Boolean success) {
+                        if (success) {
+                            MutableItemKeyedDataSource<Long, Comment> dataSource =
+                                    new MutableItemKeyedDataSource<Long, Comment>((ItemKeyedDataSource) getCurrentList().getDataSource()) {
+                                        @NotNull
+                                        @Override
+                                        public Long getKey(@NonNull Comment item) {
+                                            return item.getId();
+                                        }
+                                    };
+
+                            PagedList<Comment> currentList = getCurrentList();
+                            for (Comment comment : currentList) {
+                                if (comment != item) {
+                                    dataSource.data.add(comment);
+                                }
+                            }
+
+                            PagedList<Comment> newPageList = dataSource.createNewPageList(getCurrentList().getConfig());
+                            submitList(newPageList);
+                        }
+                    }
+                });
     }
 
     public void addAndRefreshList(Comment comment) {

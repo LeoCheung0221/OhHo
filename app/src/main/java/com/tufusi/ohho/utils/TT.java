@@ -19,12 +19,12 @@ public class TT {
     @SuppressLint("RestrictedApi")
     public static void showToast(String content) {
         if (Looper.myLooper() == Looper.getMainLooper()) {
-            Toast.makeText(AppGlobal.getsApplication(), content, Toast.LENGTH_SHORT).show();
+            Toast.makeText(AppGlobal.getApplication(), content, Toast.LENGTH_SHORT).show();
         } else {
             ArchTaskExecutor.getMainThreadExecutor().execute(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(AppGlobal.getsApplication(), content, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AppGlobal.getApplication(), content, Toast.LENGTH_SHORT).show();
                 }
             });
         }

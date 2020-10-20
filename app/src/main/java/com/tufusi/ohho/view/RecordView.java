@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -85,7 +86,7 @@ public class RecordView extends View implements View.OnClickListener, View.OnLon
         progressPaint.setStyle(Paint.Style.STROKE);
         progressPaint.setStrokeWidth(progressWidth);
 
-        Handler handler = new Handler() {
+        Handler handler = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(@NonNull Message msg) {
                 super.handleMessage(msg);
@@ -156,7 +157,7 @@ public class RecordView extends View implements View.OnClickListener, View.OnLon
         if (onRecordListener != null) {
             onRecordListener.onLongClick();
         }
-        return false;
+        return true;
     }
 
     public interface OnRecordListener {
@@ -180,12 +181,12 @@ public class RecordView extends View implements View.OnClickListener, View.OnLon
 
             canvas.drawCircle(width / 2f, height / 2f, width / 2f, fillPaint);
             // 绘制圆环进度条
-            int left = 0;
-            int top = 0;
-            int right = width;
-            int bottom = height;
-            float SweepAngle = (progressValue / progressMaxValue) * 360;
-            canvas.drawArc(left, top, right, bottom, -90, SweepAngle, false, progressPaint);
+            int left = progressWidth / 2;
+            int top = progressWidth / 2;
+            int right = width - progressWidth / 2;
+            int bottom = height - progressWidth / 2;
+            float sweepAngle = (progressValue * 1.0f / progressMaxValue) * 360;
+            canvas.drawArc(left, top, right, bottom, -90, sweepAngle, false, progressPaint);
         } else {
             canvas.drawCircle(width / 2f, height / 2f, radius, fillPaint);
         }

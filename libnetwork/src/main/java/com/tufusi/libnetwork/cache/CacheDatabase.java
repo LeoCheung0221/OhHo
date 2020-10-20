@@ -21,7 +21,7 @@ public abstract class CacheDatabase extends RoomDatabase {
         // 创建一个内存数据库
         // 这种数据库的数据只会保存在内存中，即一旦应用进程被杀死，数据也就随之消失了
         // Room.inMemoryDatabaseBuilder()
-        database = Room.databaseBuilder(AppGlobal.getsApplication(), CacheDatabase.class, "ohho_cache")
+        database = Room.databaseBuilder(AppGlobal.getApplication(), CacheDatabase.class, "ohho_cache")
                 // 是否允许在主线程中进行回调 默认false，如果不设置，在主线程中进行操作会报异常
                 .allowMainThreadQueries()
                 // 添加数据库的创建和打开操作的回调

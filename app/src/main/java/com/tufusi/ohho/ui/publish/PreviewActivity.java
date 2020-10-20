@@ -30,10 +30,10 @@ import java.io.File;
 
 public class PreviewActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String KEY_PREVIEW_URL = "key_preview_url";
-    private static final String KEY_PREVIEW_VIDEO = "key_preview_video";
-    private static final String KEY_PREVIEW_BTNTEXT = "key_preview_btnText";
-    private static final int REQUEST_PREVIEW_CODE = 1000;
+    public static final String KEY_PREVIEW_URL = "key_preview_url";
+    public static final String KEY_PREVIEW_VIDEO = "key_preview_video";
+    public static final String KEY_PREVIEW_BTNTEXT = "key_preview_btnText";
+    public static final int REQUEST_PREVIEW_CODE = 1000;
 
     private ActivityPreviewBinding mPreviewBinding;
     private SimpleExoPlayer player;

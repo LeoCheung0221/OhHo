@@ -1,5 +1,6 @@
 package com.tufusi.ohho.ui.detail;
 
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -74,7 +75,7 @@ public abstract class ViewHandler {
         });
     }
 
-    protected void showCommentDialog(){
+    protected void showCommentDialog() {
         if (commentDialog == null) {
             commentDialog = CommentDialog.newInstance(mFeed.getItemId());
         }
@@ -102,6 +103,12 @@ public abstract class ViewHandler {
                 mEmptyView.setTitle(mActivity.getString(R.string.string_comment_empty_hint));
             }
             adapter.addHeaderView(mEmptyView);
+        }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (commentDialog != null && commentDialog.isAdded()) {
+            commentDialog.onActivityResult(requestCode, resultCode, data);
         }
     }
 }
