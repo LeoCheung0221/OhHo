@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 
 import com.tufusi.libcommon.R;
 import com.tufusi.libcommon.utils.ScreenUtils;
@@ -39,6 +40,7 @@ public class LoadingDialog extends AlertDialog {
         super.show();
         setContentView(R.layout.layout_loading_view);
         loadingText = findViewById(R.id.loading_text);
+        loadingText.setTextColor(ContextCompat.getColor(getContext(), R.color.color_white));
         Window window = getWindow();
         assert window != null;
         WindowManager.LayoutParams attributes = window.getAttributes();
@@ -55,6 +57,7 @@ public class LoadingDialog extends AlertDialog {
 
     public void setLoadingText(String loadingText) {
         if (this.loadingText != null) {
+            this.loadingText.setVisibility(View.VISIBLE);
             this.loadingText.setText(loadingText);
         }
     }
