@@ -87,6 +87,7 @@ public class FeedAdapter extends AbsPagedListAdapter<Feed, FeedAdapter.FeedViewH
             public void onClick(View v) {
                 // 无缝续播需要
                 FeedDetailActivity.startFeedDetailActivity(mContext, getItem(position), mPageLifeTag);
+                onStartFeedDetailActivity(feed);
                 if (mFeedObserver == null) {
                     mFeedObserver = new FeedObserver();
                     LiveDataBus.get().with(InteractionPresenter.DATA_FROM_INTERACTION)
@@ -96,6 +97,10 @@ public class FeedAdapter extends AbsPagedListAdapter<Feed, FeedAdapter.FeedViewH
                 mFeedObserver.setFeed(feed);
             }
         });
+    }
+
+    public void onStartFeedDetailActivity(Feed feed) {
+
     }
 
     private static class FeedObserver implements Observer<Feed> {

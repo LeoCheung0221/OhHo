@@ -17,6 +17,9 @@ import com.alibaba.sdk.android.oss.model.GetObjectResult;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.tufusi.libcommon.AppGlobal;
+import com.tufusi.libnetwork.ApiService;
+
+import static com.tufusi.ohho.app.AppConstants.DEV_TAG;
 
 /**
  * 阿里云oss 文件上传
@@ -30,9 +33,13 @@ public class FileUploadManager {
     private static final String END_POINT = "http://oss-cn-hangzhou.aliyuncs.com";
     // 身份鉴权
     private static final String AUTH_SERVER_URL = "http://172.16.202.25:7080/";
+    private static final String AUTH_SERVER_URL_HOME = "http://192.168.0.104:7080/";
 
     static {
         OSSCredentialProvider credentialProvider = new OSSAuthCredentialsProvider(AUTH_SERVER_URL);
+        if (DEV_TAG) {
+            credentialProvider = new OSSAuthCredentialsProvider(AUTH_SERVER_URL_HOME);
+        }
         //该配置类如果不设置，会有默认配置，具体可看该类
         ClientConfiguration conf = new ClientConfiguration();
         conf.setConnectionTimeout(15 * 1000); // 连接超时，默认15秒

@@ -111,4 +111,16 @@ public abstract class ViewHandler {
             commentDialog.onActivityResult(requestCode, resultCode, data);
         }
     }
+
+    public void onPause() {
+
+    }
+
+    public void onResume() {
+
+    }
+
+    public void onBackPressed() {
+
+    }
 }

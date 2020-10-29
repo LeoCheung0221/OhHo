@@ -25,4 +25,9 @@
     <string name="preview_ok">完成</string>
     <string name="upload_text">正在发布</string>
     <string name="file_upload_failed">文件上传失败，请重新发布</string>
+    <string name="tag_title">选择标签</string>
+    <string name="publish_title">帖子发布</string>
+    <string name="publich_button">发布</string>
+    <string name="publish_edit_hint">加个话题,内容会被更多人看到哈~</string>
+    <string name="publish_add_tag">添加话题</string>
 </resources>

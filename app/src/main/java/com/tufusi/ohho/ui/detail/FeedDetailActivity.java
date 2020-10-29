@@ -13,8 +13,8 @@ import com.tufusi.ohho.model.Feed;
 
 public class FeedDetailActivity extends AppCompatActivity {
 
-    private static final String KEY_FEED = "key_feed";
-    private static final String KEY_LIFE_TAG = "key_life_tag";
+    public static final String KEY_FEED = "key_feed";
+    public static final String KEY_LIFE_TAG = "key_life_tag";
 
     private Feed feed;
     private ViewHandler viewHandler = null;
@@ -43,6 +43,30 @@ public class FeedDetailActivity extends AppCompatActivity {
         }
 
         viewHandler.bindInitData(feed);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (viewHandler != null) {
+            viewHandler.onPause();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (viewHandler != null) {
+            viewHandler.onResume();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (viewHandler != null) {
+            viewHandler.onBackPressed();
+        }
+        super.onBackPressed();
     }
 
     @Override

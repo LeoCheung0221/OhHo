@@ -191,7 +191,8 @@ public class OHPlayerView extends FrameLayout implements IPlayerTarget, PlayerCo
         }
 
         // 这里需要主动调用 switchPlayerView，将播放器 Exoplayer 和展示视频画面的View ExoplayerView 相关联
-        // 因为在列表页点击视频Item跳转到视频详情页的时候，详情页会复用列表页的播放器Exoplayer，然后和新创建的展示视频画面的 View ExoplayerView相关联。达到视频无缝对接效果
+        // 因为在列表页点击视频Item跳转到视频详情页的时候，详情页会复用列表页的播放器Exoplayer，
+        // 然后和新创建的展示视频画面的 View ExoplayerView相关联。达到视频无缝对接效果
         // 当再次返回列表页，则需要再次把播放器和 ExoplayerView 相关联
         pageListPlayer.switchPlayerView(playerView, true);
 

@@ -67,6 +67,7 @@ public class PageListPlayer {
 
     /**
      * 切换与播放器 exoplayer 绑定的 exoplayerView 用于页面切换视频无缝续播的场景
+     * 新旧播放器互斥
      */
     public void switchPlayerView(PlayerView newPlayerView, boolean attach) {
         mPlayView.setPlayer(attach ? null : mExoPlayer);

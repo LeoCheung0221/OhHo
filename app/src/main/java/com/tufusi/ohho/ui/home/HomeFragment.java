@@ -23,7 +23,10 @@ import java.util.List;
 public class HomeFragment extends AbsListFragment<Feed, HomeViewModel> {
 
     private PageListPlayerDetector playerDetector;
+    // tab 类型
     private String feedType;
+    // 是否需要暂停视频播放
+    private boolean shouldPause = true;
 
     public static HomeFragment newInstance(String feedType) {
 
@@ -75,6 +78,13 @@ public class HomeFragment extends AbsListFragment<Feed, HomeViewModel> {
                     }
                 }
             }
+
+            @Override
+            public void onStartFeedDetailActivity(Feed feed) {
+                // 点击如果是视频类型，则记录下来
+                boolean isVideo = feed.itemType == Feed.VIDEO_TYPE;
+                shouldPause = !isVideo;
+            }
         };
     }
 
@@ -124,7 +134,9 @@ public class HomeFragment extends AbsListFragment<Feed, HomeViewModel> {
 
     @Override
     public void onPause() {
-        playerDetector.onPause();
+        if (shouldPause){
+            playerDetector.onPause();
+        }
         super.onPause();
     }
 
