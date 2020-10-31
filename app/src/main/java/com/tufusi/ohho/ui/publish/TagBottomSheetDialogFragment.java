@@ -62,6 +62,7 @@ public class TagBottomSheetDialogFragment extends BottomSheetDialogFragment {
         behavior.setPeekHeight(ScreenUtils.getScreenHeight() / 3);
         // 不会一直收缩
         behavior.setHideable(false);
+
         ViewGroup.LayoutParams layoutParams = parent.getLayoutParams();
         layoutParams.height = ScreenUtils.getScreenHeight() * 2 / 3;
         parent.setLayoutParams(layoutParams);

@@ -10,7 +10,6 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
-import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -63,7 +62,7 @@ public class FeedAdapter extends AbsPagedListAdapter<Feed, FeedAdapter.FeedViewH
         if (feed == null) {
             return 0;
         }
-        if (feed.getItemType() == Feed.IMAGE_TYPE) {
+        if (feed.getItemType() == Feed.IMAGE_TEXT_TYPE) {
             return R.layout.layout_feed_type_image;
         } else if (feed.getItemType() == Feed.VIDEO_TYPE) {
             return R.layout.layout_feed_type_video;

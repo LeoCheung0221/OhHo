@@ -55,7 +55,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="2px"
+                android:layout_height="@dimen/dp_1"
                 android:layout_alignParentBottom="true"
                 android:background="@color/color_gray2" />
         </RelativeLayout>
@@ -79,7 +79,7 @@
         <View
             android:id="@+id/input_line"
             android:layout_width="match_parent"
-            android:layout_height="2px"
+            android:layout_height="@dimen/dp_1"
             android:background="@color/color_gray2"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/input_view" />
@@ -89,10 +89,10 @@
             android:id="@+id/action_add_tag"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_25"
-            android:layout_marginLeft="@dimen/dp_16"
+            android:layout_marginStart="@dimen/dp_16"
             android:layout_marginTop="@dimen/dp_16"
             android:gravity="center"
-            android:paddingLeft="@dimen/dp_10"
+            android:paddingStart="@dimen/dp_10"
             android:text="@string/publish_add_tag"
             android:textColor="@color/color_theme"
             android:textSize="@dimen/sp_12"

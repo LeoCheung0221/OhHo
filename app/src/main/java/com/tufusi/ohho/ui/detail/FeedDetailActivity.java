@@ -6,9 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 
-import com.tufusi.ohho.R;
 import com.tufusi.ohho.model.Feed;
 
 public class FeedDetailActivity extends AppCompatActivity {
@@ -36,7 +34,7 @@ public class FeedDetailActivity extends AppCompatActivity {
             return;
         }
 
-        if (feed.getItemType() == Feed.IMAGE_TYPE) {
+        if (feed.getItemType() == Feed.IMAGE_TEXT_TYPE) {
             viewHandler = new ImageViewHandler(this);
         } else {
             viewHandler = new VideoViewHandler(this);
