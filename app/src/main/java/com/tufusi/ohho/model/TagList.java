@@ -1,12 +1,19 @@
 package com.tufusi.ohho.model;
 
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+
+import com.tufusi.ohho.BR;
+
+import java.util.Objects;
+
 /**
  * Created by LeoCheung on 2020/10/28.
  *
  * @author 鼠夏目
  * @description
  */
-public class TagList {
+public class TagList extends BaseObservable {
 
     /**
      * id : 61
@@ -22,23 +29,23 @@ public class TagList {
      * hasFollow : false
      */
 
-    private int id;
+    private long id;
     private String icon;
     private String background;
     private String activityIcon;
     private String title;
     private String intro;
     private int feedNum;
-    private int tagId;
+    private long tagId;
     private int enterNum;
     private int followNum;
     private boolean hasFollow;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -90,11 +97,11 @@ public class TagList {
         this.feedNum = feedNum;
     }
 
-    public int getTagId() {
+    public long getTagId() {
         return tagId;
     }
 
-    public void setTagId(int tagId) {
+    public void setTagId(long tagId) {
         this.tagId = tagId;
     }
 
@@ -114,11 +121,36 @@ public class TagList {
         this.followNum = followNum;
     }
 
+    @Bindable
     public boolean isHasFollow() {
         return hasFollow;
     }
 
     public void setHasFollow(boolean hasFollow) {
         this.hasFollow = hasFollow;
+        notifyPropertyChanged(BR._all);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TagList tagList = (TagList) o;
+        return id == tagList.id &&
+                feedNum == tagList.feedNum &&
+                tagId == tagList.tagId &&
+                enterNum == tagList.enterNum &&
+                followNum == tagList.followNum &&
+                hasFollow == tagList.hasFollow &&
+                Objects.equals(icon, tagList.icon) &&
+                Objects.equals(background, tagList.background) &&
+                Objects.equals(activityIcon, tagList.activityIcon) &&
+                Objects.equals(title, tagList.title) &&
+                Objects.equals(intro, tagList.intro);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, icon, background, activityIcon, title, intro, feedNum, tagId, enterNum, followNum, hasFollow);
     }
 }

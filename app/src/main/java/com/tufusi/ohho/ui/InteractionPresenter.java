@@ -23,6 +23,7 @@ import com.tufusi.libnetwork.ResultCallback;
 import com.tufusi.ohho.app.UserManager;
 import com.tufusi.ohho.model.Comment;
 import com.tufusi.ohho.model.Feed;
+import com.tufusi.ohho.model.TagList;
 import com.tufusi.ohho.model.User;
 import com.tufusi.ohho.ui.share.ShareDialog;
 import com.tufusi.ohho.utils.TT;
@@ -130,6 +131,22 @@ public class InteractionPresenter {
     }
 
     /**
+     * 关注/取消关注 标签
+     */
+    public static void toggleTagLike(LifecycleOwner owner, TagList tagList) {
+        if (!isLogin(owner, new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+                toggleTagLikeInternal(tagList);
+            }
+        })) {
+
+        } else {
+            toggleTagLikeInternal(tagList);
+        }
+    }
+
+    /**
      * 删除帖子
      */
     public static LiveData<Boolean> deleteFeedComment(Context context, long itemId, long commentId) {
@@ -163,7 +180,7 @@ public class InteractionPresenter {
                     public void onSuccess(OhResponse<JSONObject> response) {
                         if (response.body != null) {
                             boolean result = response.body.getBooleanValue("result");
-                            ((MutableLiveData)liveData).postValue(result);
+                            ((MutableLiveData) liveData).postValue(result);
                         }
                     }
 
@@ -212,6 +229,26 @@ public class InteractionPresenter {
                     @Override
                     public void onError(OhResponse<JSONObject> response) {
                         showToast(response.message);
+                    }
+                });
+    }
+
+    private static void toggleTagLikeInternal(TagList tagList) {
+        ApiService.get("/tag/toggleTagFollow")
+                .addParam("tagId", tagList.getTagId())
+                .addParam("userId", UserManager.get().getUserId())
+                .execute(new ResultCallback<JSONObject>() {
+                    @Override
+                    public void onSuccess(OhResponse<JSONObject> response) {
+                        if (response.body!=null){
+                            boolean follow = response.body.getBoolean("hasFollow");
+                            tagList.setHasFollow(follow);
+                        }
+                    }
+
+                    @Override
+                    public void onError(OhResponse<JSONObject> response) {
+                        TT.showToast(response.message);
                     }
                 });
     }
@@ -353,4 +390,4 @@ public class InteractionPresenter {
         };
     }
 
-} 
+}

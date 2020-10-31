@@ -29,14 +29,14 @@ import java.util.HashMap;
 @FragmentDestination(pageUrl = "main/tabs/sofa", asStarter = false, needLogin = false)
 public class SofaFragment extends Fragment {
 
-    private FragmentSofaBinding binding;
-    private TabLayout sofaTab;
-    private ViewPager2 viewPager2;
-    private SofaTab tabConfig;
-    private ArrayList<SofaTab.Tabs> tabs;
+    protected FragmentSofaBinding binding;
+    protected TabLayout sofaTab;
+    protected ViewPager2 viewPager2;
+    protected SofaTab tabConfig;
+    protected ArrayList<SofaTab.Tabs> tabs;
 
-    private HashMap<Integer, Fragment> mFragmentMap = new HashMap<>();
-    private TabLayoutMediator mediator;
+    protected HashMap<Integer, Fragment> mFragmentMap = new HashMap<>();
+    protected TabLayoutMediator mediator;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -125,11 +125,11 @@ public class SofaFragment extends Fragment {
         return tabView;
     }
 
-    private Fragment getTabFragment(int position) {
+    public Fragment getTabFragment(int position) {
         return HomeFragment.newInstance(tabs.get(position).getTag());
     }
 
-    private SofaTab getTabConfig() {
+    public SofaTab getTabConfig() {
         return AppRouteConfig.getSofaTabConfig();
     }
 

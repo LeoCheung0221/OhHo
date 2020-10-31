@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="tagList"
+            type="com.tufusi.ohho.model.TagList" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_90">
+
+        <com.tufusi.ohho.view.OHImageView
+            android:id="@+id/tag_avatar"
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="@dimen/dp_60"
+            android:layout_marginStart="@dimen/dp_10"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
+            app:image_url="@{tagList.icon}"
+            app:isCircle="@{false}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:radius="@{8}"
+            tools:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/tag_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_20"
+            android:text="@{tagList.title}"
+            android:textColor="@color/color_000"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintLeft_toRightOf="@+id/tag_avatar"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="王者荣耀" />
+
+        <TextView
+            android:id="@+id/tag_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="@{tagList.feedNum+@string/tag_list_item_hot_feed}"
+            android:textColor="@color/color_999"
+            android:textSize="@dimen/sp_13"
+            app:layout_constraintLeft_toRightOf="@+id/tag_avatar"
+            app:layout_constraintTop_toBottomOf="@+id/tag_title"
+            tools:text="中路大舞台，没钱我就来" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/action_follow"
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="@dimen/dp_28"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:backgroundTint="@color/color_theme"
+            android:gravity="center"
+            android:padding="0dp"
+            android:text="@{tagList.hasFollow?@string/tag_follow:@string/tag_unfollow}"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/sp_13"
+            app:cornerRadius="@dimen/dp_5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/tag_follow" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_gravity="bottom"
+            android:background="@color/color_gray2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

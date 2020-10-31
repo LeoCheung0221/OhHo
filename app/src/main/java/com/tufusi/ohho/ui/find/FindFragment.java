@@ -1,38 +1,45 @@
 package com.tufusi.ohho.ui.find;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.tufusi.libnavannotation.FragmentDestination;
-import com.tufusi.ohho.R;
+import com.tufusi.ohho.app.AppRouteConfig;
+import com.tufusi.ohho.model.SofaTab;
+import com.tufusi.ohho.ui.sofa.SofaFragment;
 
 @FragmentDestination(pageUrl = "main/tabs/find", asStarter = false, needLogin = false)
-public class FindFragment extends Fragment {
-
-    private FindViewModel findViewModel;
+public class FindFragment extends SofaFragment {
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        findViewModel =
-                ViewModelProviders.of(this).get(FindViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_find, container, false);
-        final TextView textView = root.findViewById(R.id.text_find);
-        findViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-        return root;
+    public Fragment getTabFragment(int position) {
+        SofaTab.Tabs tab = getTabConfig().getTabs().get(position);
+        TagListFragment fragment = TagListFragment.newInstance(tab.getTag());
+        return fragment;
+    }
+
+    @Override
+    public void onAttachFragment(@NonNull Fragment childFragment) {
+        super.onAttachFragment(childFragment);
+        assert childFragment.getArguments() != null;
+        String tagType = childFragment.getArguments().getString(TagListFragment.KEY_TAG_TYPE);
+        if (TextUtils.equals(tagType, "onlyFollow")) {
+            ViewModelProviders.of(childFragment).get(TagListViewModel.class)
+                    .getSwitchLiveData().observe(this, new Observer() {
+                @Override
+                public void onChanged(Object o) {
+                    viewPager2.setCurrentItem(1);
+                }
+            });
+        }
+    }
+
+    @Override
+    public SofaTab getTabConfig() {
+        return AppRouteConfig.getFindTabConfig();
     }
 }

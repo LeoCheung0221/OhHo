@@ -37,4 +37,10 @@
     <string name="feed_publish_success">帖子发布成功,去沙发页看看吧</string>
     <string name="file_upload_cover_message">封面图上传失败</string>
     <string name="file_upload_original_message">原始文件上传失败</string>
+    <string name="tag_follow">已关注</string>
+    <string name="tag_unfollow">关注</string>
+    <string name="tag_list_no_follow">还没关注任何数据,去推荐页面看看吧~</string>
+    <string name="tag_list_no_follow_button">看看推荐</string>
+    <string name="tag_list_item_hot_feed">条热门内容</string>
+
 </resources>

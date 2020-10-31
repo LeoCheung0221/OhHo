@@ -28,6 +28,7 @@ public class AppRouteConfig {
     private static HashMap<String, Destination> sDestConfig;
     private static BottomBar sBottomBarConfig;
     private static SofaTab sSofaTabConfig;
+    private static SofaTab sFindTabConfig;
 
     /**
      * 获取页面路径路由配置
@@ -70,6 +71,20 @@ public class AppRouteConfig {
         return sSofaTabConfig;
     }
 
+
+    public static SofaTab getFindTabConfig() {
+        String content = parseFile("find_tabs_config.json");
+        sFindTabConfig = JSON.parseObject(content, SofaTab.class);
+
+        Collections.sort(sFindTabConfig.getTabs(), new Comparator<SofaTab.Tabs>() {
+            @Override
+            public int compare(SofaTab.Tabs o1, SofaTab.Tabs o2) {
+                return o1.getIndex() < o2.getIndex() ? -1 : 1;
+            }
+        });
+        return sFindTabConfig;
+    }
+
     /**
      * 获取 assets 下的 fileName/dest.json 并解析实例
      *
@@ -108,5 +123,4 @@ public class AppRouteConfig {
         }
         return builder.toString();
     }
-
-} 
+}

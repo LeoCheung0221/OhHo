@@ -105,7 +105,8 @@ public abstract class AbsListFragment<T, M extends AbsViewModel> extends Fragmen
         }
     }
 
-    protected abstract void afterCreateView();
+    protected void afterCreateView() {
+    }
 
     /**
      * 提交数据进行刷新
