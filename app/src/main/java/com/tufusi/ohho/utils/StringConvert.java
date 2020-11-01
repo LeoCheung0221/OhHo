@@ -14,4 +14,12 @@ public class StringConvert {
         }
         return String.valueOf(count);
     }
+
+    public static String convertTagFeedListNum(int count) {
+        if (count < 10000) {
+            return count + "人观看";
+        }
+        return count / 10000 + "万人观看";
+    }
+
 } 

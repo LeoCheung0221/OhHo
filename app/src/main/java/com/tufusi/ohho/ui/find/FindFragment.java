@@ -29,7 +29,7 @@ public class FindFragment extends SofaFragment {
         String tagType = childFragment.getArguments().getString(TagListFragment.KEY_TAG_TYPE);
         if (TextUtils.equals(tagType, "onlyFollow")) {
             ViewModelProviders.of(childFragment).get(TagListViewModel.class)
-                    .getSwitchLiveData().observe(this, new Observer() {
+                    .getSwitchTabLiveData().observe(this, new Observer() {
                 @Override
                 public void onChanged(Object o) {
                     viewPager2.setCurrentItem(1);

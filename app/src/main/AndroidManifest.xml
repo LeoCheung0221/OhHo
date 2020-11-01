@@ -33,6 +33,7 @@
             android:required="false" />
 
         <activity android:name=".ui.publish.PublishActivity" />
+        <activity android:name=".ui.find.TagFeedListActivity"/>
         <activity
             android:name=".MainActivity"
             android:theme="@style/launcher">
@@ -46,22 +47,14 @@
         <activity
             android:name=".ui.detail.FeedDetailActivity"
             android:theme="@style/feedDetail" />
-
         <activity
             android:name=".ui.publish.CaptureActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/capture">
-
-        </activity>
-
+            android:theme="@style/capture"></activity>
         <activity
             android:name=".ui.publish.PreviewActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/preview">
-
-        </activity>
-
-        <!-- 注册 QQ SDK Activity -->
+            android:theme="@style/preview"></activity> <!-- 注册 QQ SDK Activity -->
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"

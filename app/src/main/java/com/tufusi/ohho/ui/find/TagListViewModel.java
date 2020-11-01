@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import androidx.annotation.NonNull;
 import androidx.arch.core.executor.ArchTaskExecutor;
 import androidx.lifecycle.MutableLiveData;
-import androidx.paging.DataSource;
 import androidx.paging.ItemKeyedDataSource;
 
 import com.alibaba.fastjson.TypeReference;
@@ -34,7 +33,7 @@ public class TagListViewModel extends AbsViewModel<TagList> {
     private AtomicBoolean loadAfter = new AtomicBoolean();
     private int offset;
     private String tagType;
-    private MutableLiveData switchTagLiveData = new MutableLiveData();
+    private MutableLiveData switchTabLiveData = new MutableLiveData();
 
     public void setTagType(String tagType) {
         this.tagType = tagType;
@@ -61,8 +60,8 @@ public class TagListViewModel extends AbsViewModel<TagList> {
         });
     }
 
-    public MutableLiveData getSwitchLiveData() {
-        return switchTagLiveData;
+    public MutableLiveData getSwitchTabLiveData() {
+        return switchTabLiveData;
     }
 
     private class DataSource extends ItemKeyedDataSource<Long, TagList> {

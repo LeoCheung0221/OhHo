@@ -23,7 +23,9 @@ public class PageListPlayerDetector {
     private LifecycleOwner mOwner;
     private RecyclerView mRecyclerView;
 
+    // 收集一个个的能够进行视频播放的 对象，面向接口
     private List<IPlayerTarget> mTargets = new ArrayList<>();
+    // 正在播放的那个
     private IPlayerTarget mPlayingTarget;
 
     private Pair<Integer, Integer> rvLocation = null;
@@ -43,26 +45,25 @@ public class PageListPlayerDetector {
         mOwner = owner;
         mRecyclerView = recyclerView;
 
+        /**
+         * 监听数组的生命周期
+         */
+        LifecycleEventObserver mLifecycleObserver = new LifecycleEventObserver() {
+            @Override
+            public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
+                if (event == Lifecycle.Event.ON_DESTROY) {
+                    mPlayingTarget = null;
+                    mTargets.clear();
+                    mRecyclerView.removeCallbacks(delayAutoPlay);
+                    mRecyclerView.removeOnScrollListener(mScrollListener);
+                    mOwner.getLifecycle().removeObserver(this);
+                }
+            }
+        };
         mOwner.getLifecycle().addObserver(mLifecycleObserver);
         recyclerView.getAdapter().registerAdapterDataObserver(mDataObserver);
         recyclerView.addOnScrollListener(mScrollListener);
     }
-
-    /**
-     * 监听数组的生命周期
-     */
-    private LifecycleEventObserver mLifecycleObserver = new LifecycleEventObserver() {
-        @Override
-        public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
-            if (event == Lifecycle.Event.ON_DESTROY) {
-                mPlayingTarget = null;
-                mTargets.clear();
-                mRecyclerView.removeCallbacks(delayAutoPlay);
-                mRecyclerView.removeOnScrollListener(mScrollListener);
-                mOwner.getLifecycle().removeObserver(this);
-            }
-        }
-    };
 
     /**
      * 监听是否有数据添加到了 RecyclerView 里

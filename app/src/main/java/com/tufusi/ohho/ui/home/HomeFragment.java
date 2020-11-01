@@ -59,13 +59,13 @@ public class HomeFragment extends AbsListFragment<Feed, HomeViewModel> {
             public void onViewAttachedToWindow2(@NonNull FeedViewHolder holder) {
                 // 判断是否是视频类型的item
                 if (holder.isVideoType()) {
-                    playerDetector.addTarget(holder.getPlayView());
+                    playerDetector.addTarget(holder.getPlayerView());
                 }
             }
 
             @Override
             public void onViewDetachedFromWindow2(@NonNull FeedViewHolder holder) {
-                playerDetector.removeTarget(holder.getPlayView());
+                playerDetector.removeTarget(holder.getPlayerView());
             }
 
             @Override

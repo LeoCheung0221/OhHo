@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="tagList"
+            type="com.tufusi.ohho.model.TagList" />
+
+        <variable
+            name="owner"
+            type="androidx.lifecycle.LifecycleOwner" />
+
+        <import type="com.tufusi.ohho.ui.InteractionPresenter" />
+
+    </data>
+
+    <com.tufusi.libcommon.view.WindowInsetsFrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/refresh_layout"
+            layout="@layout/layout_refresh_view" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/top_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_white"
+            android:fitsSystemWindows="true">
+
+            <ImageView
+                android:id="@+id/action_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_16"
+                android:src="@drawable/icon_back_black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.tufusi.ohho.view.OHImageView
+                android:id="@+id/tag_logo"
+                android:layout_width="@dimen/dp_30"
+                android:layout_height="@dimen/dp_30"
+                android:layout_marginStart="@dimen/dp_10"
+                android:layout_marginTop="@dimen/dp_8"
+                android:layout_marginBottom="@dimen/dp_8"
+                app:image_url="@{tagList.icon}"
+                app:isCircle="@{false}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/action_back"
+                app:layout_constraintTop_toTopOf="parent"
+                app:radius="@{8}"
+                tools:src="@mipmap/ic_launcher" />
+
+            <TextView
+                android:id="@+id/tag_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_10"
+                android:text="@{tagList.title}"
+                android:textColor="@color/color_000"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/tag_logo"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="title" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/top_bar_follow"
+                android:layout_width="@dimen/dp_60"
+                android:layout_height="@dimen/dp_28"
+                android:layout_marginStart="@dimen/dp_10"
+                android:backgroundTint="@color/color_theme"
+                android:onClick="@{()->InteractionPresenter.toggleTagLike(owner,tagList)}"
+                android:padding="0dp"
+                android:text="@{tagList.hasFollow?@string/tag_follow:@string/tag_unfollow}"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/sp_13"
+                app:cornerRadius="@dimen/dp_5"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/tag_title"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="关注" />
+
+            <View
+                android:id="@+id/top_line"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_1"
+                android:background="@color/color_gray2"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.tufusi.libcommon.view.WindowInsetsFrameLayout>
+</layout>

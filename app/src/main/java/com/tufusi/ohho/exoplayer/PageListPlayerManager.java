@@ -82,7 +82,7 @@ public class PageListPlayerManager {
     }
 
     public static void release(String pageName) {
-        PageListPlayer pageListPlayer = sPlayerHashMap.get(pageName);
+        PageListPlayer pageListPlayer = sPlayerHashMap.remove(pageName);
         if (pageListPlayer != null) {
             pageListPlayer.release();
         }

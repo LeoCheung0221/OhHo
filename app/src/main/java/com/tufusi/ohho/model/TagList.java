@@ -5,6 +5,7 @@ import androidx.databinding.Bindable;
 
 import com.tufusi.ohho.BR;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -13,7 +14,7 @@ import java.util.Objects;
  * @author 鼠夏目
  * @description
  */
-public class TagList extends BaseObservable {
+public class TagList extends BaseObservable implements Serializable {
 
     /**
      * id : 61

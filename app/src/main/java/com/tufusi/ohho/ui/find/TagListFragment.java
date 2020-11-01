@@ -6,7 +6,6 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.paging.ItemKeyedDataSource;
 import androidx.paging.PagedList;
 import androidx.paging.PagedListAdapter;
@@ -48,7 +47,7 @@ public class TagListFragment extends AbsListFragment<TagList, TagListViewModel> 
             mEmptyView.setAction(getString(R.string.tag_list_no_follow_button), new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mViewModel.getSwitchLiveData().setValue(new Object());
+                    mViewModel.getSwitchTabLiveData().setValue(new Object());
                 }
             });
         }
@@ -58,7 +57,6 @@ public class TagListFragment extends AbsListFragment<TagList, TagListViewModel> 
 
     @Override
     public PagedListAdapter getAdapter() {
-        assert getArguments() != null;
         tagType = getArguments().getString(KEY_TAG_TYPE);
         TagListAdapter adapter = new TagListAdapter(getContext());
         return adapter;

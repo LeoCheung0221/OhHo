@@ -1,6 +1,7 @@
 package com.tufusi.ohho.ui.home;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -92,7 +93,6 @@ public class FeedAdapter extends AbsPagedListAdapter<Feed, FeedAdapter.FeedViewH
                     LiveDataBus.get().with(InteractionPresenter.DATA_FROM_INTERACTION)
                             .observe((LifecycleOwner) mContext, mFeedObserver);
                 }
-
                 mFeedObserver.setFeed(feed);
             }
         });
@@ -152,7 +152,7 @@ public class FeedAdapter extends AbsPagedListAdapter<Feed, FeedAdapter.FeedViewH
             return mBinding instanceof LayoutFeedTypeVideoBinding;
         }
 
-        public OHPlayerView getPlayView() {
+        public OHPlayerView getPlayerView() {
             return playerView;
         }
     }

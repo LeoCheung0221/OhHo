@@ -17,7 +17,6 @@ import com.alibaba.sdk.android.oss.model.GetObjectResult;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.tufusi.libcommon.AppGlobal;
-import com.tufusi.libnetwork.ApiService;
 
 import static com.tufusi.ohho.app.AppConstants.DEV_TAG;
 
@@ -33,7 +32,7 @@ public class FileUploadManager {
     private static final String END_POINT = "http://oss-cn-hangzhou.aliyuncs.com";
     // 身份鉴权
     private static final String AUTH_SERVER_URL = "http://172.16.202.25:7080/";
-    private static final String AUTH_SERVER_URL_HOME = "http://192.168.0.104:7080/";
+    private static final String AUTH_SERVER_URL_HOME = "http://192.168.0.107:7080/";
 
     static {
         OSSCredentialProvider credentialProvider = new OSSAuthCredentialsProvider(AUTH_SERVER_URL);

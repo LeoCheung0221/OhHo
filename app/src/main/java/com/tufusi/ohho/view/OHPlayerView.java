@@ -84,8 +84,9 @@ public class OHPlayerView extends FrameLayout implements IPlayerTarget, PlayerCo
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        //点击改区域时，展示视频进度控制器
+        //点击该区域时，展示视频进度控制器
         PageListPlayer player = PageListPlayerManager.get(mPageLifeTag);
+        player.mControlView.show();
         return true;
     }
 
