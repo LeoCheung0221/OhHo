@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="feed"
+            type="com.tufusi.ohho.model.Feed" />
+
+        <variable
+            name="lifeCycleOwner"
+            type="androidx.lifecycle.LifecycleOwner" />
+
+        <import type="android.view.View" />
+
+        <import type="com.tufusi.ohho.model.Feed" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_white"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/dp_10">
+
+        <include
+            layout="@layout/layout_feed_author"
+            app:user="@{feed.topComment.author}" />
+
+        <include
+            layout="@layout/layout_feed_post"
+            app:feedText="@{feed.topComment.commentText}"
+            app:lines="@{3}" />
+
+        <com.tufusi.libcommon.view.CornerLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginLeft="@dimen/dp_16"
+            android:layout_marginRight="@dimen/dp_16"
+            android:layout_marginBottom="@dimen/dp_16"
+            android:background="@color/color_gray2"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/dp_16"
+            app:clip_radius="6dp"
+            app:clip_side="all">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:singleLine="true"
+                android:text="@{feed.feeds_text}"
+                android:textColor="@color/color_000"
+                android:textSize="@dimen/sp_14"
+                android:textStyle="bold" />
+
+            <FrameLayout
+                android:layout_width="@dimen/dp_40"
+                android:layout_height="@dimen/dp_40">
+
+                <com.tufusi.ohho.view.OHImageView
+                    android:id="@+id/icon_cover"
+                    image_url="@{feed.cover}"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    app:clip_radius="6dp"
+                    app:clip_side="right" />
+
+                <ImageView
+                    android:id="@+id/icon_video"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/exo_icon_play"
+                    android:visibility="@{feed.itemType==Feed.VIDEO_TYPE?View.VISIBLE:View.GONE}" />
+
+            </FrameLayout>
+
+        </com.tufusi.libcommon.view.CornerLinearLayout>
+
+        <include
+            layout="@layout/layout_feed_tag"
+            app:tagText="@{feed.activityText}" />
+
+        <include
+            android:id="@+id/interaction_binding"
+            layout="@layout/layout_profile_tab_comment_interaction"
+            app:feed="@{feed}"
+            app:lifeCycleOwner="@{lifeCycleOwner}" />
+
+    </LinearLayout>
+
+</layout>

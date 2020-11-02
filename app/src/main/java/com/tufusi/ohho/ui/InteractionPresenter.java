@@ -240,7 +240,7 @@ public class InteractionPresenter {
                 .execute(new ResultCallback<JSONObject>() {
                     @Override
                     public void onSuccess(OhResponse<JSONObject> response) {
-                        if (response.body!=null){
+                        if (response.body != null) {
                             boolean follow = response.body.getBoolean("hasFollow");
                             tagList.setHasFollow(follow);
                         }
@@ -390,4 +390,34 @@ public class InteractionPresenter {
         };
     }
 
+    public static LiveData<Boolean> deleteFeed(Context context, long itemId) {
+        MutableLiveData<Boolean> liveData = new MutableLiveData<>();
+        new AlertDialog.Builder(context)
+                .setNegativeButton("删除", (dialog, which) -> {
+                    dialog.dismiss();
+                    deleteFeedInternal(liveData, itemId);
+                }).setPositiveButton("取消", (dialog, which) -> dialog.dismiss())
+                .setMessage("确定要删除这条评论吗？").create().show();
+        return liveData;
+    }
+
+    private static void deleteFeedInternal(MutableLiveData<Boolean> liveData, long itemId) {
+        ApiService.get("/feeds/deleteFeed")
+                .addParam("itemId", itemId)
+                .execute(new ResultCallback<JSONObject>() {
+                    @Override
+                    public void onSuccess(OhResponse<JSONObject> response) {
+                        if (response.body != null) {
+                            boolean success = response.body.getBoolean("result");
+                            liveData.postValue(success);
+                            showToast("删除成功");
+                        }
+                    }
+
+                    @Override
+                    public void onError(OhResponse<JSONObject> response) {
+                        showToast(response.message);
+                    }
+                });
+    }
 }

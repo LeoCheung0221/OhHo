@@ -14,7 +14,6 @@ import com.tufusi.ohho.exoplayer.PageListPlayerDetector;
 import com.tufusi.ohho.exoplayer.PageListPlayerManager;
 import com.tufusi.ohho.model.Feed;
 import com.tufusi.ohho.ui.AbsListFragment;
-import com.tufusi.ohho.ui.home.FeedAdapter;
 
 /**
  * Created by LeoCheung on 2020/11/2.
@@ -47,7 +46,7 @@ public class ProfileListFragment extends AbsListFragment<Feed, ProfileViewModel>
     @Override
     public PagedListAdapter getAdapter() {
         tabType = getArguments().getString(ProfileActivity.KEY_TAB_TYPE);
-        return new FeedAdapter(getContext(), tabType) {
+        return new ProfileListAdapter(getContext(), tabType) {
             @Override
             public void onViewAttachedToWindow2(FeedViewHolder holder) {
                 if (holder.isVideoType()) {
