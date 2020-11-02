@@ -110,7 +110,7 @@ public class OHPlayerView extends FrameLayout implements IPlayerTarget, PlayerCo
         // 设置高斯模糊背景
         // 只有当高>宽，才需要展示高斯模糊
         if (widthPx < heightPx) {
-            blur.setBlurImageUrl(coverUrl, 10);
+            OHImageView.setBlurImageUrl(blur, coverUrl, 10);
             blur.setVisibility(VISIBLE);
         } else {
             blur.setVisibility(INVISIBLE);

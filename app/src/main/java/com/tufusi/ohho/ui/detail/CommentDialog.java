@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -270,12 +271,18 @@ public class CommentDialog extends AppCompatDialogFragment implements View.OnCli
         });
     }
 
+    @SuppressLint("RestrictedApi")
     private void onCommentSuccess(Comment body) {
         TT.showToast("评论发布成功");
-        if (onCommentAddListener != null) {
-            onCommentAddListener.onCommentAdd(body);
-        }
-        dismiss();
+        ArchTaskExecutor.getMainThreadExecutor().execute(new Runnable() {
+            @Override
+            public void run() {
+                if (onCommentAddListener != null) {
+                    onCommentAddListener.onCommentAdd(body);
+                }
+                dismiss();
+            }
+        });
     }
 
     private void showLoadingDialog() {
@@ -288,7 +295,15 @@ public class CommentDialog extends AppCompatDialogFragment implements View.OnCli
 
     private void dismissLoadingDialog() {
         if (loadingDialog != null) {
-            loadingDialog.dismiss();
+            if (Looper.myLooper() == Looper.getMainLooper()) {
+                ArchTaskExecutor.getMainThreadExecutor().execute(() -> {
+                    if (loadingDialog != null && loadingDialog.isShowing()) {
+                        loadingDialog.dismiss();
+                    }
+                });
+            } else if (loadingDialog.isShowing()) {
+                loadingDialog.dismiss();
+            }
         }
     }
 

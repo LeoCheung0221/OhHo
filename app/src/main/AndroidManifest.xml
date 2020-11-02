@@ -26,14 +26,14 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="q">
-
-        <!-- 这是是QQ快捷登录SDK 里面包含但没用的 apache的类，需要在这里通过uses-library去除掉 -->
+        <activity android:name=".ui.my.UserBehaviorListActivity"></activity>
+        <activity android:name=".ui.my.ProfileActivity" /> <!-- 这是是QQ快捷登录SDK 里面包含但没用的 apache的类，需要在这里通过uses-library去除掉 -->
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
 
         <activity android:name=".ui.publish.PublishActivity" />
-        <activity android:name=".ui.find.TagFeedListActivity"/>
+        <activity android:name=".ui.find.TagFeedListActivity" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/launcher">
@@ -50,11 +50,11 @@
         <activity
             android:name=".ui.publish.CaptureActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/capture"></activity>
+            android:theme="@style/capture" />
         <activity
             android:name=".ui.publish.PreviewActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/preview"></activity> <!-- 注册 QQ SDK Activity -->
+            android:theme="@style/preview" /> <!-- 注册 QQ SDK Activity -->
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"

@@ -139,18 +139,19 @@ public class OHImageView extends AppCompatImageView {
     /**
      * 设置高斯模糊
      *
-     * @param coverUrl 封面图
-     * @param radius   半径
+     * @param blurUrl 封面图
+     * @param radius  半径
      */
-    public void setBlurImageUrl(String coverUrl, int radius) {
-        Glide.with(this).load(coverUrl).override(radius)
+    @BindingAdapter(value = {"blur_url", "radius"})
+    public static void setBlurImageUrl(ImageView imageView, String blurUrl, int radius) {
+        Glide.with(imageView).load(blurUrl).override(radius)
                 .transform(new BlurTransformation())
                 .dontAnimate()
                 .into(new SimpleTarget<Drawable>() {
                     @Override
                     public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                         // 必须是 setBackground，如果 setImageDrawable 会撑不满组件的宽高
-                        setBackground(resource);
+                        imageView.setBackground(resource);
                     }
                 });
     }
